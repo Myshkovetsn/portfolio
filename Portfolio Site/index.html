@@ -1,0 +1,1190 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Мышковец Надежда — Product Designer</title>
+    <meta name="description" content="Мышковец Надежда — Product Designer с опытом в B2C-продуктах" />
+    <meta property="og:title" content="Мышковец Надежда — Product Designer" />
+    <meta property="og:description" content="Проектирую сложные интерфейсы на основе UX-исследований и данных" />
+    <meta property="og:image" content="https://myshkovetsn.ru/images/hero.png" />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /*
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    ТИПОГРАФИКА — единая система
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    Дисплей (hero-имя в шапке): 31px / 700
+    Дисплей (секция "Проекты"):  64px / 700  letter-spacing: -0.03em
+    Карточка — заголовок:        28px / 600  letter-spacing: -0.02em
+    Карточка — описание:         15px / 400
+    Hero bio:                    17px / 400  leading: 1.65
+    Навигация:                   14px / 500
+    Подпись (muted):             15px / 400
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    */
+
+      :root {
+        --bg: #f1f1f1;
+        --dark: #0e0e19;
+        --text: #0e0e19;
+        --muted: #7a7a7a;
+        --border: rgba(0, 0, 0, 0.1);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      /* ══════════════════════════════
+       NAV
+       ══════════════════════════════ */
+      .site-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        padding: 20px 40px;
+        display: flex;
+        align-items: center;
+        /* кнопки по центру относительно всего лого */
+        justify-content: space-between;
+        transition:
+          background 0.35s,
+          border-color 0.35s;
+        border-bottom: 1px solid transparent;
+      }
+
+      .site-nav.solid {
+        background: #ffffff;
+        border-color: var(--border);
+      }
+
+      .nav-logo {
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .nav-logo-name {
+        font-weight: 700;
+        line-height: 1.15;
+        font-size: 31px;
+        color: #fff;
+        transition:
+          font-size 0.35s,
+          color 0.35s;
+      }
+
+      .nav-logo-role {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.7);
+        transition:
+          max-height 0.35s,
+          opacity 0.35s;
+        max-height: 28px;
+        overflow: hidden;
+      }
+
+      .site-nav.solid .nav-logo-name {
+        font-size: 15px;
+        color: var(--text);
+      }
+
+      .site-nav.solid .nav-logo-role {
+        max-height: 0;
+        opacity: 0;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 8px;
+        list-style: none;
+      }
+
+      .nav-pill {
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        border-radius: 20px;
+        padding: 7px 18px;
+        background: rgba(255, 255, 255, 0.18);
+        color: #fff;
+        transition: opacity 0.2s;
+      }
+
+      .site-nav.solid .nav-pill {
+        background: rgba(0, 0, 0, 0.07);
+        color: var(--text);
+      }
+
+      .nav-pill:hover {
+        opacity: 0.65;
+      }
+
+      .nav-burger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 4px;
+      }
+
+      .nav-burger span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: #fff;
+        border-radius: 2px;
+        transition: background 0.3s;
+      }
+
+      .site-nav.solid .nav-burger span {
+        background: var(--text);
+      }
+
+      .nav-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 190;
+        background: var(--dark);
+        flex-direction: column;
+        padding: 100px 32px 40px;
+        opacity: 0;
+        transition: opacity 0.25s;
+      }
+
+      .nav-overlay.open {
+        display: flex;
+        opacity: 1;
+      }
+
+      .nav-overlay .ol-link {
+        font-size: 30px;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+        margin-bottom: 20px;
+        display: block;
+      }
+
+      .overlay-contacts {
+        margin-top: 40px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .overlay-contacts a {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.55);
+        text-decoration: none;
+        margin-bottom: 12px;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 28px;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 36px;
+        cursor: pointer;
+        line-height: 1;
+      }
+
+      /* ══════════════════════════════
+       HERO — ровно 100vh, лицо сверху
+       ══════════════════════════════ */
+      .hero {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        /* ровно один экран */
+        overflow: hidden;
+        background: #111;
+      }
+
+      .hero-bg {
+        /* портретное фото: якорим сверху чтобы лицо было видно */
+        position: absolute;
+        top: 0;
+        /* Убираем 200, прижимаем к самому верху */
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+
+        /* Смещаем фокус: по горизонтали центр, по вертикали 15% (поднимаем лицо вверх) */
+        object-position: center 45%;
+        animation: heroIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      }
+
+      @keyframes heroIn {
+        from {
+          transform: scale(1.06);
+          opacity: 0;
+        }
+
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.05) 50%, transparent 100%);
+      }
+
+      .hero-text {
+        position: absolute;
+        bottom: 48px;
+        left: 40px;
+        right: 40px;
+        max-width: 560px;
+        color: #fff;
+        animation: textIn 0.9s 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      }
+
+      .hero-text p {
+        font-size: 17px;
+        line-height: 1.65;
+      }
+
+      @keyframes textIn {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* ══════════════════════════════
+       PROJECTS
+       ══════════════════════════════ */
+      #projects {
+        padding: 120px 40px;
+        max-width: 1540px;
+        margin: 0 auto;
+      }
+
+      .projects-list {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        /* Увеличили зазор между карточками */
+      }
+
+      .p-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        min-height: 480px;
+        border-radius: 32px;
+        /* Более мягкие углы */
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        background: #ffffff;
+        /* Всегда белый фон */
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition:
+          transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+          box-shadow 0.4s ease;
+      }
+
+      /* Дисплей-заголовок секции */
+      .section-title {
+        font-size: 64px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+        margin-bottom: 8px;
+      }
+
+      .section-sub {
+        font-size: 15px;
+        color: var(--muted);
+        margin-bottom: 48px;
+      }
+
+      .projects-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      /* Текстовая панель */
+      .p-text {
+        padding: 64px;
+        /* Больше воздуха внутри */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .p-text-inner {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Карточка — заголовок: 28px semibold (увеличен с 23px) */
+      .p-text h3 {
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        line-height: 1.25;
+        margin-bottom: 14px;
+      }
+
+      .p-card:hover .p-text h3 {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .p-text p {
+        font-size: 15px;
+        color: var(--muted);
+        line-height: 1.7;
+        margin-bottom: 28px;
+      }
+
+      .p-cta {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        opacity: 0;
+        transform: translateX(-6px);
+        transition:
+          opacity 0.25s,
+          transform 0.25s;
+      }
+
+      .p-card:hover .p-cta {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* Фото-панель: скруглена со всех сторон */
+      .p-image {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        aspect-ratio: 1.2 / 1;
+        background: #1a1020;
+        border-radius: 20px;
+        /* скругление всех углов */
+      }
+
+      .img-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .img-ui {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        transform-origin: bottom;
+        transform: scale(0.9);
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .p-card:hover .img-ui {
+        transform: scale(1);
+      }
+
+      /* ══════════════════════════════
+       ОПЫТ РАБОТЫ
+       ══════════════════════════════ */
+      .experience-section {
+        max-width: 1540px;
+        margin: 160px auto;
+        padding: 0 40px;
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        /* Сетка как в проектах */
+        gap: 80px;
+        align-items: start;
+      }
+
+      /* Фикс для левой колонки и прилипания */
+      .experience-left {
+        height: 100%;
+      }
+
+      .skills-sticky-wrap {
+        position: sticky;
+        top: 140px;
+        /* Прилипает к верху при скролле */
+      }
+
+      .skills-block {
+        margin-top: 40px;
+      }
+
+      .skills-label {
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--muted);
+        margin: 24px 0 12px;
+      }
+
+      .skills-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .skill-tag {
+        padding: 6px 14px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      /* Карточки опыта в стиле Apple (без теней) */
+      .experience-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .exp-item {
+        background: #fff;
+        padding: 32px;
+        border-radius: 24px;
+        border: 1px solid var(--border);
+      }
+
+      .exp-company {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .exp-role {
+        font-size: 15px;
+        color: var(--muted);
+        margin-bottom: 20px;
+      }
+
+      .exp-description li {
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 8px;
+        color: var(--text);
+      }
+
+      .exp-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 12px;
+      }
+
+      .exp-company {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .exp-date {
+        font-size: 16px;
+        color: var(--muted);
+      }
+
+      .exp-role {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 16px;
+        color: var(--text);
+      }
+
+      .exp-description {
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+        color: #3a3a3c;
+      }
+
+      .exp-description li {
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text);
+        margin-bottom: 8px;
+        display: flex;
+        gap: 10px;
+      }
+
+      .exp-description li::before {
+        content: "—";
+        /* Твой фирменный дефис */
+        color: var(--muted);
+      }
+
+      /* ══════════════════════════════
+       PHOTO CARDS — ровно 100vh, лицо сверху
+       ══════════════════════════════ */
+      #about-me {
+        padding: 160px 20px; /* Тот самый отступ, который мы выбрали */
+        background: var(--bg); /* Возвращаем светлый фон */
+        color: var(--text);
+        text-align: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .about-title {
+        font-size: 48px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        max-width: 800px;
+        margin: 0 auto 80px;
+        color: var(--text); /* Гарантируем читаемость */
+      }
+
+      .photo-stack {
+        position: relative;
+        height: 500px; /* Высота зоны для раскидывания */
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .stack-card {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 260px; /* Немного компактнее для 9 штук */
+        padding: 16px; /* Фиксированный отступ от края карточки до контента */
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* Деликатная тень на светлом фоне */
+        cursor: grab;
+        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(var(--angle));
+        transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        border: 1px solid rgba(0, 0, 0, 0.05); /* Тонкая рамка, чтобы карточка не сливалась с фоном f1f1f1 */
+      }
+
+      .stack-card:active {
+        cursor: grabbing;
+        scale: 1.05;
+        z-index: 100;
+      }
+
+      .stack-card img {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: 12px;
+        display: block;
+        margin-bottom: 16px; /* Фиксированное расстояние от фото до текста */
+        pointer-events: none; /* Дополнительная защита от Eagle */
+      }
+
+      .card-caption {
+        font-size: 14px;
+        line-height: 1.4;
+        color: #1c1c1e;
+        font-weight: 500;
+        text-align: left;
+        min-height: 40px; /* Резервируем место под 2 строки, чтобы карточки были одной высоты */
+      }
+
+      /* ══════════════════════════════
+       FOOTER
+       ══════════════════════════════ */
+      .site-footer {
+        background: var(--dark);
+        color: #fff;
+        padding: 64px 40px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 40px;
+      }
+
+      .site-footer h2 {
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 1.3;
+        max-width: 500px;
+      }
+
+      .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        align-items: flex-end;
+      }
+
+      .footer-links a {
+        font-size: 15px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: color 0.2s;
+      }
+
+      .footer-links a:hover {
+        color: #fff;
+      }
+
+      .arr {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border: 1 px solid currentColor;
+        border-radius: 50%;
+        font-size: 11px;
+        font-weight: 700;
+        opacity: 0.6;
+        transition: opacity 0.2s;
+        flex-shrink: 0;
+      }
+
+      .footer-links a:hover .arr {
+        opacity: 1;
+      }
+
+      /* Fade-up */
+      .fade-up {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+
+      .fade-up.in {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* ══════════════════════════════
+       МОБИЛЬНАЯ ВЕРСИЯ
+       ══════════════════════════════ */
+      @media (max-width: 800px) {
+        html,
+        body {
+          width: 100%;
+          overflow-x: hidden;
+          position: relative;
+        }
+
+        .site-nav {
+          padding: 16px 20px;
+          width: 100%;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .nav-burger {
+          display: flex;
+        }
+
+        .hero {
+          height: auto;
+          min-height: 80vh;
+        }
+
+        .hero-text {
+          left: 20px;
+          right: 20px;
+          bottom: 28px;
+          width: auto;
+        }
+
+        .hero-text p {
+          font-size: 16px;
+          line-height: 1.5;
+        }
+
+        #projects {
+          padding: 60px 16px;
+          width: 100%;
+        }
+
+        .section-title {
+          font-size: 36px;
+          line-height: 1.1;
+        }
+
+        .p-card {
+          grid-template-columns: 1fr;
+          min-height: auto;
+          width: 100%;
+        }
+
+        .p-card.img-left .p-image {
+          order: 0;
+        }
+
+        .p-image {
+          aspect-ratio: 1 / 1;
+          min-height: auto;
+        }
+
+        .p-text {
+          padding: 32px 20px;
+        }
+
+        .p-text h3 {
+          font-size: 22px;
+        }
+
+        .p-cta {
+          opacity: 1;
+          transform: none;
+        }
+
+        /* Уменьшаем общие отступы секции */
+        #about-me {
+          padding: 80px 16px;
+        }
+
+        /* Заголовок делаем более читабельным для мобилки */
+        .about-title {
+          font-size: 28px;
+          margin-bottom: 40px;
+          max-width: 100%;
+        }
+
+        /* Ограничиваем высоту зоны, чтобы карточки не разлетались за пределы экрана */
+        .photo-stack {
+          height: 400px;
+          width: 100%;
+        }
+
+        /* Уменьшаем карточки, чтобы они не занимали весь экран */
+        .stack-card {
+          width: 180px; /* Было 260px */
+          padding: 10px;
+          border-radius: 16px;
+          touch-action: none; /* Запрещает скролл страницы, когда палец на карточке */
+        }
+
+        .stack-card img {
+          margin-bottom: 8px;
+          border-radius: 8px;
+        }
+
+        .card-caption {
+          font-size: 12px;
+          min-height: 32px; /* Чуть меньше подпись */
+        }
+
+        /* ФИКС ОПЫТА РАБОТЫ */
+        .experience-section {
+          grid-template-columns: 1fr;
+          gap: 32px;
+          padding: 0 16px;
+          margin: 80px 0;
+          width: 100%;
+        }
+
+        .skills-sticky-wrap {
+          position: static;
+          width: 100%;
+        }
+
+        .experience-list {
+          width: 100%;
+          gap: 12px;
+        }
+
+        .exp-item {
+          padding: 24px;
+          width: 100%;
+        }
+
+        .site-footer {
+          grid-template-columns: 1fr;
+          padding: 40px 20px;
+          width: 100%;
+        }
+        .footer-links {
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="site-nav" id="mainNav">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-name">Мышковец Надежда</span>
+        <span class="nav-logo-role">Product designer</span>
+      </a>
+      <ul class="nav-links">
+        <li><a class="nav-pill" href="#projects">Проекты</a></li>
+        <li><a class="nav-pill" href="https://disk.yandex.ru/i/yGqZMtid8uBw-g" target="_blank">Резюме</a></li>
+      </ul>
+      <button class="nav-burger" id="burgerBtn" aria-label="Меню"><span></span><span></span><span></span></button>
+    </nav>
+
+    <div class="nav-overlay" id="navOverlay">
+      <button class="close-btn" id="closeBtn">×</button>
+      <a class="ol-link" href="#projects" id="olProjects">Проекты</a>
+      <a class="ol-link" href="https://disk.yandex.ru/i/yGqZMtid8uBw-g" target="_blank">Резюме</a>
+      <div class="overlay-contacts">
+        <a href="https://t.me/NadyaMyshk" target="_blank">Telegram</a>
+        <a href="mailto:myshkovetsn&#64;yandex.ru">myshkovetsn&#64;yandex.ru</a>
+      </div>
+    </div>
+
+    <!-- HERO: ровно 100vh, лицо сверху -->
+    <div class="hero">
+      <img class="hero-bg" src="images/hero.png" alt="Мышковец Надежда" />
+      <div class="hero-overlay"></div>
+      <div class="hero-text">
+        <p>
+          Product Designer с опытом в B2C-продуктах. Проектирую сложные интерфейсы на основе UX-исследований и данных. Работаю с полным продуктовым циклом — от пользовательских интервью до
+          тестирования и внедрения решений.
+        </p>
+      </div>
+    </div>
+
+    <!-- Полосы -->
+    <div class="global-grid-lines">
+      <div class="g-line"></div>
+      <div class="g-line"></div>
+      <div class="g-line"></div>
+    </div>
+
+    <section id="projects">
+      <h2 class="section-title fade-up">Проекты</h2>
+      <p class="section-sub fade-up">Избранные работы</p>
+      <div class="projects-list">
+        <!-- 3: текст слева, фото справа -->
+        <a class="p-card fade-up" href="rating.html">
+          <div class="p-text">
+            <div class="p-text-inner">
+              <h3>Просмотренные доклады</h3>
+              <p>Рост конверсии в отзывы на 34%, среднее время заполнения сократилось в 3 раза</p>
+              <span class="p-cta">Смотреть проект →</span>
+            </div>
+          </div>
+          <div class="p-image">
+            <img class="img-bg" src="images/rating-bg.png" alt="" />
+            <img class="img-ui" src="images/rating-ui.png" alt="Просмотренные доклады" />
+          </div>
+        </a>
+
+        <!-- 2: фото слева, текст справа -->
+        <a class="p-card img-left fade-up" href="account.html">
+          <div class="p-text">
+            <div class="p-text-inner">
+              <h3>Концепт личного пространства</h3>
+              <p>Создала прототип персонализированного кабинета участника конференции для проверки 5 гипотез</p>
+              <span class="p-cta">Смотреть проект →</span>
+            </div>
+          </div>
+          <div class="p-image">
+            <img class="img-bg" src="images/account-bg.png" alt="" />
+            <img class="img-ui" src="images/account-ui.png" alt="Личное пространство" />
+          </div>
+        </a>
+
+        <!-- 1: текст слева, фото справа -->
+        <a class="p-card fade-up" href="navigation.html">
+          <div class="p-text">
+            <div class="p-text-inner">
+              <h3>Система оценки навигации на конференциях</h3>
+              <p>Разработала систему оценки, превращающую наблюдения в данные для улучшения пользовательского опыта</p>
+              <span class="p-cta">Смотреть проект →</span>
+            </div>
+          </div>
+          <div class="p-image">
+            <img class="img-bg" src="images/nav-bg.png" alt="" />
+            <img class="img-ui" src="images/nav-ui.png" alt="Система навигации" />
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="experience-section fade-up">
+      <div class="experience-left">
+        <div class="skills-sticky-wrap">
+          <h2 class="section-title">Опыт работы</h2>
+
+          <div class="skills-block">
+            <p class="skills-label">Навыки</p>
+            <div class="skills-list">
+              <span class="skill-tag">Mobile & Web дизайн</span>
+              <span class="skill-tag">UX-исследоания</span>
+              <span class="skill-tag">Дизайн-системы</span>
+              <span class="skill-tag">CJM</span>
+              <span class="skill-tag">Прототипирование</span>
+              <span class="skill-tag">UI дизайн</span>
+              <span class="skill-tag">UX-копирайтинг</span>
+              <span class="skill-tag">Юзабилити-тестирования</span>
+              <span class="skill-tag">A/B тестирования</span>
+              <span class="skill-tag">Метрики</span>
+            </div>
+
+            <p class="skills-label">Инструменты</p>
+            <div class="skills-list">
+              <span class="skill-tag">Figma</span>
+              <span class="skill-tag">Photoshop</span>
+              <span class="skill-tag">Illustrator</span>
+              <span class="skill-tag">After Effects</span>
+              <span class="skill-tag">Miro</span>
+              <span class="skill-tag">Jira</span>
+              <span class="skill-tag">Mattermost</span>
+              <span class="skill-tag">Trello</span>
+              <span class="skill-tag">Notion</span>
+              <span class="skill-tag">HTML, CSS (основы)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="experience-list">
+        <div class="exp-item">
+          <div class="exp-header">
+            <div class="exp-company">Finance & Productivity App, pre-seed</div>
+            <div class="exp-date">Январь 2026 — н. вр.</div>
+          </div>
+          <div class="exp-role">Product Designer</div>
+          <ul class="exp-description">
+            <li>Проектирую MVP приложения для трекинга задач и личных финансов — на стыке productivity и fintech</li>
+            <li>Совместно с фаундером формирую продуктовую стратегию и гипотезы ценности.</li>
+            <li>Провела серию глубинных интервью, уточнила проблематику и сделала сегментацию аудитории.</li>
+            <li>Формирую требования к MVP и проектирую пользовательские сценарии.</li>
+            <li>Определила подход к монетизации (one-time purchase model).</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div class="exp-company">JUG Ru Group</div>
+            <div class="exp-date">Февраль 2024 — май 2025</div>
+          </div>
+          <div class="exp-role">Product designer</div>
+          <ul class="exp-description">
+            <li>
+              Перепроектировала процесс сбора обратной связи, интегрировав оценку в основной пользовательский сценарий, что увеличило конверсию в отзывы с 12% до 34% и сократило среднее время
+              заполнения формы в 3 раза.
+            </li>
+            <li>Участвовала в формировании дерева продуктовых метрик совместно с CX-командой.</li>
+            <li>
+              Сформулировала и приоритизировала гипотезы роста Retention и повторного участия, спроектировала MVP персонализированного кабинета участника; концепт представлен руководству и принят как
+              основа для обсуждения развития экосистемы.
+            </li>
+            <li>
+              Разработала методологию оценки качества навигации офлайн-конференций (Navigation Score) для 10+ ежегодных мероприятий с тысячами участников, протестированную на 9 площадках и внедрённую
+              в работу Event-, CX- и Marketing-команд.
+            </li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div class="exp-company">Pushkeen</div>
+            <div class="exp-date">Апрель 2021 — Январь 2024</div>
+          </div>
+          <div class="exp-role">UI/UX designer</div>
+          <ul class="exp-description">
+            <li>Вела продукт компании — мобильное приложение Public Art (гид по уличному искусству): исследования, юзертесты, A/B-эксперименты, улучшение пользовательского опыта.</li>
+            <li>Проектировала архитектуру и дизайн-системы для корпоративных сайтов.</li>
+            <li>Вела коммуникацию с заказчиками: согласование требований, презентация дизайн-решений.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="about-me">
+      <div class="about-container">
+        <p class="about-label">Познакомимся поближе?</p>
+        <h2 class="about-title">Здесь можно узнать меня чуть лучше, растащив карточки</h2>
+
+        <div class="photo-stack" id="stack">
+          <!-- Карточка 9 -->
+          <div class="stack-card" style="--angle: -8deg; --x: -30px; --y: 15px">
+            <img src="images/photocard-golden hours.png" alt="golden hours" />
+            <div class="card-caption">Обожаю это чарующее освещение перед закатом</div>
+          </div>
+          <!-- Карточка 8 -->
+          <div class="stack-card" style="--angle: 4deg; --x: 40px; --y: -20px">
+            <img src="images/photocard-nature.png" alt="nature" />
+            <div class="card-caption">Ценю время, проведенное на природе</div>
+          </div>
+          <!-- Карточка 7 -->
+          <div class="stack-card" style="--angle: -3deg; --x: -10px; --y: -40px">
+            <img src="images/photocard-coffee.png" alt="coffee" />
+            <div class="card-caption">Мое утро не начнется без кофе</div>
+          </div>
+          <!-- Карточка 6 -->
+          <div class="stack-card" style="--angle: 6deg; --x: 60px; --y: 10px">
+            <img src="images/photocard-painting.png" alt="painting" />
+            <div class="card-caption">Пытаюсь рисовать акварелью</div>
+          </div>
+          <!-- Карточка 5 -->
+          <div class="stack-card" style="--angle: -5deg; --x: -50px; --y: -10px">
+            <img src="images/photocard-sewing.png" alt="sewing" />
+            <div class="card-caption">Шью себе одежду</div>
+          </div>
+          <!-- Карточка 4 -->
+          <div class="stack-card" style="--angle: 2deg; --x: 10px; --y: 30px">
+            <img src="images/photocard-sea.png" alt="sea" />
+            <div class="card-caption">Как и многие, люблю море</div>
+          </div>
+          <!-- Карточка 3 -->
+          <div class="stack-card" style="--angle: -10deg; --x: -60px; --y: -30px">
+            <img src="images/photocard-hiking.png" alt="hiking" />
+            <div class="card-caption">Иногда хожу в походы</div>
+          </div>
+          <!-- Карточка 2 -->
+          <div class="stack-card" style="--angle: 7deg; --x: 30px; --y: 40px">
+            <img src="images/photocard-roses.png" alt="roses" />
+            <div class="card-caption">Не могу пройти мимо цветов и не сфоткать</div>
+          </div>
+          <!-- Карточка 1 -->
+          <div class="stack-card" style="--angle: -2deg; --x: 0px; --y: 0px">
+            <img src="images/photocard-roller skates.png" alt="roller skates" />
+            <div class="card-caption">Люблю кататься на роликах</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <h2>Готова подключиться к сложным задачам и разложить их по полочкам</h2>
+      <div class="footer-links">
+        <a href="https://t.me/NadyaMyshk" target="_blank">Telegram <span class="arr">↗</span></a>
+        <a href="https://disk.yandex.ru/i/yGqZMtid8uBw-g" target="_blank">Резюме <span class="arr">↗</span></a>
+        <a href="mailto:myshkovetsn&#64;yandex.ru">myshkovetsn&#64;yandex.ru <span class="arr">↗</span></a>
+      </div>
+    </footer>
+
+    <script>
+      const nav = document.getElementById("mainNav");
+      function updateNav() {
+        nav.classList.toggle("solid", window.scrollY > window.innerHeight * 0.55);
+      }
+      window.addEventListener("scroll", updateNav, { passive: true });
+      updateNav();
+
+      const overlay = document.getElementById("navOverlay");
+      document.getElementById("burgerBtn").onclick = () => overlay.classList.add("open");
+      document.getElementById("closeBtn").onclick = () => overlay.classList.remove("open");
+      document.getElementById("olProjects").onclick = () => overlay.classList.remove("open");
+
+      const fadeEls = document.querySelectorAll(".fade-up");
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver(
+          (ee) =>
+            ee.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("in");
+                io.unobserve(e.target);
+              }
+            }),
+          { threshold: 0, rootMargin: "0px 0px -40px 0px" },
+        );
+        fadeEls.forEach((el) => io.observe(el));
+      } else {
+        fadeEls.forEach((el) => el.classList.add("in"));
+      }
+      setTimeout(() => fadeEls.forEach((el) => el.classList.add("in")), 1500);
+
+      <!-- Скрипт для перетаскивания -->
+      const stack = document.getElementById("stack");
+      const cards = document.querySelectorAll(".stack-card");
+
+      cards.forEach((card) => {
+        card.addEventListener("dragstart", (e) => e.preventDefault());
+        let isDragging = false;
+        let startX, startY;
+        let currentX = 0,
+          currentY = 0;
+
+        card.addEventListener("mousedown", startDragging);
+        window.addEventListener("mousemove", drag);
+        window.addEventListener("mouseup", stopDragging);
+
+        // Для мобилок
+        card.addEventListener("touchstart", (e) => startDragging(e.touches[0]));
+        window.addEventListener("touchmove", (e) => drag(e.touches[0]));
+        window.addEventListener("touchend", stopDragging);
+
+        function startDragging(e) {
+          // Сбрасываем z-index у всех и даем текущей 1000
+          cards.forEach((c) => (c.style.zIndex = 1));
+          card.style.zIndex = 1000;
+          isDragging = true;
+          startX = e.clientX - currentX;
+          startY = e.clientY - currentY;
+          card.style.transition = "none";
+        }
+
+        function drag(e) {
+          if (!isDragging) return;
+          currentX = e.clientX - startX;
+          currentY = e.clientY - startY;
+          // Оставляем вращение, меняем только координаты
+          const angle = getComputedStyle(card).getPropertyValue("--angle");
+          card.style.transform = `translate(calc(-50% + ${currentX}px), calc(-50% + ${currentY}px)) rotate(${angle})`;
+        }
+
+        function stopDragging() {
+          isDragging = false;
+          card.style.transition = "transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)";
+        }
+      });
+    </script>
+  </body>
+</html>

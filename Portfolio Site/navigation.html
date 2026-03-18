@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Система оценки навигации — Мышковец Надежда</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #f1f1f1;
+        --dark: #0f0f0f;
+        --text: #0e0e19;
+        --muted: #7a7a7a;
+        --light: #e5e5e5;
+        --divider: rgba(0, 0, 0, 0.1);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      /* ==================== NAV ==================== */
+      #nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: #ffffff;
+        border-bottom: 1px solid var(--divider);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 40px;
+      }
+      .nav-logo {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+      }
+      .nav-logo-name {
+        font-size: 31px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1;
+      }
+      .nav-logo-role {
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--muted);
+        line-height: 1.3;
+      }
+      .nav-links {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .nav-links a {
+        display: inline-block;
+        padding: 7px 16px;
+        border-radius: 100px;
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        background: rgba(0, 0, 0, 0.07);
+        color: var(--text);
+        transition: background 0.2s;
+      }
+      .nav-links a:hover {
+        background: rgba(0, 0, 0, 0.13);
+      }
+
+      .burger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+      }
+      .burger span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: var(--text);
+        border-radius: 2px;
+      }
+
+      /* ==================== MOBILE OVERLAY ==================== */
+      .mobile-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        background: var(--text);
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 32px 40px 48px;
+      }
+      .mobile-overlay.open {
+        display: flex;
+      }
+      .overlay-top {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .overlay-close {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 36px;
+        cursor: pointer;
+        line-height: 1;
+        opacity: 0.7;
+      }
+      .overlay-links {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .overlay-links a {
+        font-size: 30px;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+      }
+      .overlay-contacts {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .overlay-contacts a {
+        font-size: 14px;
+        color: var(--muted);
+        text-decoration: none;
+      }
+
+      /* ==================== CASE COVER ==================== */
+      .case-cover {
+        width: 100%;
+        height: 420px;
+        overflow: hidden;
+      }
+      .case-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+        display: block;
+      }
+
+      /* ==================== CASE HEADER ==================== */
+      .case-header-wrap {
+        border-bottom: 1px solid var(--divider);
+      }
+      .case-header {
+        max-width: 1520px;
+        margin: 0 auto;
+        padding: 56px 40px;
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 64px;
+      }
+      .case-h1 {
+        font-size: 52px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        margin-bottom: 16px;
+      }
+      .case-subtitle {
+        font-size: 15px;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+      .case-meta {
+        border-left: 1px solid var(--divider);
+        padding-left: 40px;
+      }
+      .meta-item {
+        padding: 14px 0;
+        border-bottom: 1px solid var(--divider);
+      }
+      .meta-item:first-child {
+        padding-top: 0;
+      }
+      .meta-item:last-child {
+        border-bottom: none;
+      }
+      .meta-label {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 5px;
+      }
+      .meta-value {
+        font-size: 14px;
+        line-height: 1.65;
+        color: var(--text);
+      }
+
+      /* ==================== CONTENT ==================== */
+      .case-content {
+        max-width: 1520px;
+        margin: 0 auto;
+        padding: 72px 40px 80px;
+      }
+      .case-content section + section {
+        margin-top: 72px;
+      }
+
+      h2.section-title {
+        font-size: 40px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+        margin-top: 72px;
+        margin-bottom: 24px;
+      }
+      h2.section-title:first-child {
+        margin-top: 0;
+      }
+
+      h3.sub-title {
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 14px;
+        margin-top: 32px;
+      }
+
+      p {
+        font-size: 16px;
+        line-height: 1.8;
+        margin-bottom: 16px;
+      }
+      p:last-child {
+        margin-bottom: 0;
+      }
+
+      ul,
+      ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+      }
+      li {
+        font-size: 16px;
+        line-height: 1.8;
+        margin-bottom: 4px;
+      }
+
+      strong {
+        font-weight: 600;
+      }
+
+      /* ==================== SPLIT (two-column) ==================== */
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: center;
+        margin-top: 32px;
+        margin-bottom: 32px;
+      }
+      .split.top {
+        align-items: flex-start;
+      }
+      .split-image img {
+        width: 100%;
+        border-radius: 20px;
+        display: block;
+      }
+      .split-image figcaption {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 8px;
+        line-height: 1.5;
+      }
+
+      /* ==================== FULL IMAGE ==================== */
+      .full-image {
+        margin: 32px 0;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .full-image img {
+        width: 100%;
+        display: block;
+      }
+      .full-image figcaption {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 8px;
+        padding: 0 4px;
+      }
+
+      /* ==================== ROLE SECTION ==================== */
+      .role-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 8px;
+      }
+
+      /* ==================== PROCESS STEPS ==================== */
+      .process-steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        margin: 32px 0;
+        border: 1px solid var(--divider);
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .process-step {
+        padding: 28px 24px;
+        border-right: 1px solid var(--divider);
+        position: relative;
+      }
+      .process-step:last-child {
+        border-right: none;
+      }
+      .step-title {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.3;
+        margin-bottom: 8px;
+      }
+      .step-title em {
+        font-style: normal;
+        color: var(--muted);
+        font-weight: 400;
+      }
+      .step-num {
+        position: absolute;
+        bottom: 16px;
+        left: 24px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .step-bar {
+        height: 3px;
+        background: var(--text);
+        border-radius: 2px;
+        margin-top: 32px;
+      }
+
+      /* ==================== CRITERIA TABLE ==================== */
+      .criteria-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 32px 0;
+        font-size: 14px;
+      }
+      .criteria-table th,
+      .criteria-table td {
+        padding: 12px 16px;
+        border: 1px solid var(--divider);
+        line-height: 1.5;
+        vertical-align: top;
+      }
+      .criteria-table thead th {
+        background: var(--text);
+        color: #fff;
+        font-weight: 600;
+        text-align: left;
+      }
+      .criteria-table .row-label {
+        background: var(--light);
+        font-weight: 500;
+        font-size: 12px;
+        writing-mode: vertical-lr;
+        text-align: center;
+        width: 32px;
+        padding: 16px 8px;
+      }
+      .criteria-table td.score-0 {
+        color: var(--muted);
+      }
+      .criteria-table td.score-05 {
+      }
+      .criteria-table td.score-1 {
+        font-weight: 500;
+      }
+
+      /* ==================== RESULTS CARDS ==================== */
+      .result-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 32px;
+      }
+      .result-card {
+        background: #fff;
+        border: 1px solid var(--divider);
+        border-radius: 12px;
+        padding: 20px 24px;
+        font-size: 16px;
+        line-height: 1.65;
+      }
+
+      /* ==================== CASE NAV ==================== */
+      .case-nav-wrap {
+        border-top: 1px solid var(--divider);
+      }
+      .case-nav {
+        max-width: 1520px;
+        margin: 0 auto;
+        padding: 48px 40px 80px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 32px;
+      }
+      .case-nav-link {
+        text-decoration: none;
+        color: var(--text);
+        max-width: 320px;
+      }
+      .case-nav-link.next {
+        text-align: right;
+      }
+      .case-nav-direction {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .case-nav-title {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+      .case-nav-link:hover .case-nav-title {
+        text-decoration: underline;
+      }
+
+      /* ==================== FOOTER ==================== */
+      footer {
+        background: var(--dark);
+        color: #fff;
+        padding: 64px 40px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: end;
+      }
+      .footer-cta {
+        font-size: 26px;
+        font-weight: 600;
+        line-height: 1.35;
+        letter-spacing: -0.02em;
+      }
+      .footer-links {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+      }
+      .footer-links a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 15px;
+        opacity: 0.9;
+        transition: opacity 0.2s;
+      }
+      .footer-links a:hover {
+        opacity: 0.5;
+      }
+
+      /* ==================== FADE-UP ==================== */
+      .fade-up {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.65s ease,
+          transform 0.65s ease;
+      }
+      .fade-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ==================== MOBILE ==================== */
+      @media (max-width: 800px) {
+        html,
+        body { overflow-x: hidden; width: 100%;}
+        #nav { padding: 12px 20px; width: 100%;}
+        .nav-links { display: none;}
+        .burger { display: flex;}
+
+        .case-cover { height: 240px; width: 100%;}
+        .case-header { grid-template-columns: 1fr; padding: 40px 16px; gap: 24px; width: 100%; }
+        .case-h1 { font-size: 32px;}
+        .case-meta { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 24px; width: 100%;}
+
+        .case-content { padding: 40px 16px 60px; width: 100%; }
+        h2.section-title { font-size: 28px; margin-top: 40px; }
+
+        .split { grid-template-columns: 1fr; gap: 24px; width: 100%;}
+        .process-steps { grid-template-columns: 1fr; width: 100%;}
+        .process-step { border-right: none; border-bottom: 1px solid var(--border);}
+
+        /* ФИКС ТАБЛИЦЫ */
+        .criteria-table {
+          font-size: 12px;
+          display: block;
+          overflow-x: auto; /* Позволяем таблице скроллиться внутри, не распирая экран */
+          width: 100%;
+        }
+
+        .case-nav {
+          padding: 40px 16px;
+          flex-direction: column;
+          width: 100%;
+        }
+        .case-nav-link.next {
+          text-align: left;
+        }
+        footer {
+          grid-template-columns: 1fr;
+          padding: 48px 16px;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav id="nav">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-name">Мышковец Надежда</span>
+        <span class="nav-logo-role">Product designer</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#projects">Проекты</a>
+        <a
+          href="https://disk.yandex.ru/i/yGqZMtid8uBw-g"
+          target="_blank"
+          rel="noopener"
+          >Резюме</a
+        >
+      </div>
+      <button class="burger" id="burger" aria-label="Меню">
+        <span></span><span></span>
+      </button>
+    </nav>
+
+    <!-- MOBILE OVERLAY -->
+    <div class="mobile-overlay" id="mobileOverlay">
+      <div class="overlay-top">
+        <button class="overlay-close" id="overlayClose">×</button>
+      </div>
+      <div class="overlay-links">
+        <a href="index.html#projects">Проекты</a>
+        <a
+          href="https://disk.yandex.ru/i/yGqZMtid8uBw-g"
+          target="_blank"
+          rel="noopener"
+          >Резюме</a
+        >
+      </div>
+      <div class="overlay-contacts">
+        <a href="https://t.me/NadyaMyshk" target="_blank" rel="noopener"
+          >Telegram</a
+        >
+        <a href="mailto:myshkovetsn&#64;yandex.ru">myshkovetsn&#64;yandex.ru</a>
+      </div>
+    </div>
+
+    <!-- COVER IMAGE -->
+    <div class="case-cover">
+      <img
+        src="images/nav-cover.jpg"
+        alt="Конференция — навигация участников"
+      />
+    </div>
+
+    <!-- CASE HEADER -->
+    <div class="case-header-wrap">
+      <header class="case-header">
+        <div>
+          <h1 class="case-h1">Система оценки навигации на конференциях</h1>
+          <p class="case-subtitle">
+            Разработала систему оценки, превращающую наблюдения в данные для
+            улучшения пользовательского опыта.<br /><br /><strong
+              >Подход применим к любому сервисному сценарию, где качество
+              пользовательского опыта трудно измерить стандартными
+              метриками.</strong
+            >
+          </p>
+        </div>
+        <div class="case-meta">
+          <div class="meta-item">
+            <p class="meta-label">Задача</p>
+            <p class="meta-value">
+              создать способ измерения качества навигации на офлайн-конференциях
+              и сделать её управляемым параметром подготовки мероприятия.
+            </p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">О проекте</p>
+            <p class="meta-value">
+              10+ крупных конференций в год, разные площадки, тысячи участников,
+              высокая плотность потоков. Навигационные ошибки приводили к
+              перегрузкам, опозданиям и разрывам пользовательского опыта.
+            </p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Решение</p>
+            <p class="meta-value">
+              разработала воспроизводимую систему оценки навигации — выделила
+              ключевые сценарии перемещения, сформировала критерии оценки,
+              внедрила числовой показатель (Navigation Score) и шаблон отчёта
+              для сравнения площадок.
+            </p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Статус</p>
+            <p class="meta-value">
+              методика протестирована на 9 конференциях (3 площадки) и
+              используется командами Event, CX и Marketing без привлечения
+              дизайнера.
+            </p>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <!-- CONTENT -->
+    <main class="case-content">
+      <!-- Моя роль -->
+      <section>
+        <h2 class="section-title fade-up">Моя роль</h2>
+        <p class="role-label fade-up">Product Designer</p>
+        <p class="fade-up">Отвечала за:</p>
+        <ul class="fade-up">
+          <li>формализацию проблемы отсутствия измеримости;</li>
+          <li>проектирование структуры метрики и критериев оценки;</li>
+          <li>разработку пользовательских сценариев офлайн-передвижения;</li>
+          <li>тестирование методики на 9 конференциях;</li>
+          <li>
+            внедрение стандарта оценки в работу Event-, CX- и Marketing-команд.
+          </li>
+        </ul>
+        <p class="fade-up">
+          Работала на стыке UX-исследования, операционного анализа и
+          продуктового подхода к метрикам.
+        </p>
+      </section>
+
+      <!-- Контекст -->
+      <section>
+        <div class="split fade-up">
+          <div class="split-text">
+            <h2 class="section-title fade-up">Контекст</h2>
+            <p>
+              Компания ежегодно проводит крупные офлайн-конференции на разных
+              площадках.
+            </p>
+            <p>
+              Навигация в таком формате — часть операционной системы события:
+            </p>
+            <ul>
+              <li>исправлять ошибки «по ходу» невозможно,</li>
+              <li>плотность потоков усиливает любые недочёты,</li>
+              <li>площадки меняются, а опыт должен быть воспроизводимым.</li>
+            </ul>
+          </div>
+          <figure class="split-image">
+            <img
+              src="images/nav-context.jpg"
+              alt="Регистрация участников на конференции"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <!-- Проблема -->
+      <section>
+        <h2 class="section-title fade-up">Проблема</h2>
+        <p class="fade-up">
+          Каждая конференция решала проблему навигации заново, без накопления
+          знаний и возможности сравнения площадок и решений между событиями.
+        </p>
+        <ul class="fade-up">
+          <li>Не существовало объективной системы оценки.</li>
+          <li>Команды обсуждали проблемы на уровне ощущений.</li>
+          <li>
+            Невозможно было сравнить площадки между собой и видеть динамику.
+          </li>
+        </ul>
+        <p class="fade-up">
+          Навигация напрямую влияет на NPS — но при высокой плотности потоков
+          она разрушает опыт участника и может привести к уходу с мероприятия.
+          При этом никакого способа измерить это не существовало.
+        </p>
+
+        <img
+          src="images/nav-escalator.png"
+          alt="Эскалатор"
+          style="width: 100%; border-radius: 20px"
+        />
+      </section>
+
+      <!-- Почему именно метрика -->
+      <section>
+        <h2 class="section-title fade-up">Почему именно метрика</h2>
+        <p class="fade-up">
+          Наблюдения были разрозненными, жалобы — ситуативными, приоритеты —
+          неочевидными.
+        </p>
+        <p class="fade-up">Метрика позволила:</p>
+        <ul class="fade-up">
+          <li>сравнивать сценарии между собой,</li>
+          <li>выявлять зоны перегрузки,</li>
+          <li>принимать решения до мероприятия, а не в моменте.</li>
+        </ul>
+      </section>
+
+      <!-- Процесс -->
+      <section>
+        <h2 class="section-title fade-up">Процесс</h2>
+        <p class="fade-up">
+          Проанализировала путь участника от входа до выхода.
+        </p>
+        <ol class="fade-up">
+          <li>Выделила повторяющиеся сценарии передвижения.</li>
+          <li>
+            Определила 9 ключевых пространственных сценариев, формирующих ядро
+            навигации.
+          </li>
+          <li>
+            Сформировала критерии оценки по трёхбалльной шкале (1 / 0.5 / 0).
+          </li>
+          <li>Разработала чек-лист и шаблон отчёта.</li>
+          <li>Протестировала методику на 9 конференциях.</li>
+        </ol>
+
+        <img
+          src="images/nav-process.png"
+          alt="Процесс"
+          style="width: 100%; border-radius: 20px"
+        />
+
+        <p class="fade-up">
+          Я осознанно не вводила веса сценариев. Несмотря на разную
+          функциональную значимость зон, каждая из них влияет на непрерывность
+          участия. Для быстрого и воспроизводимого инструмента было важно
+          сохранить простую и равную модель оценки.
+        </p>
+
+        <h3 class="sub-title fade-up">
+          Критерии оценки пространственных сценариев
+        </h3>
+        <div style="overflow-x: auto">
+          <table class="criteria-table fade-up">
+            <thead>
+              <tr>
+                <th>Тип</th>
+                <th>Критерий оценки</th>
+                <th>Оценка 0 — неудовлетворительно</th>
+                <th>Оценка 0.5 — допустимо, но есть барьеры</th>
+                <th>Оценка 1 — удобно и понятно</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="row-label" rowspan="3">Пространственные</td>
+                <td>Понятность перемещения между локациями</td>
+                <td class="score-0">Участник теряется, нет указателей</td>
+                <td class="score-05">
+                  Путь неочевиден, требуется помощь/время
+                </td>
+                <td class="score-1">
+                  Маршрут ясен, есть указатели, навигация логична
+                </td>
+              </tr>
+              <tr>
+                <td>Время на ориентирование</td>
+                <td class="score-0">
+                  Тратит на маршрут &gt;2 минут, нужна помощь
+                </td>
+                <td class="score-05">1–2 минуты, возможно без помощи</td>
+                <td class="score-1">
+                  &lt; 1 минуты, понятно с первого взгляда
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Видимость ключевых зон (залы, дискуссионные, кофе-брейки)
+                </td>
+                <td class="score-0">Не видно/непонятно</td>
+                <td class="score-05">Надо искать, спрашивать</td>
+                <td class="score-1">Хорошо видно, легко найти</td>
+              </tr>
+              <tr>
+                <td class="row-label" rowspan="2">Ситуативные</td>
+                <td>Доступность информации о возможностях</td>
+                <td class="score-0">
+                  Нет явных источников (стендов, инфо-экранов)
+                </td>
+                <td class="score-05">Информация доступна, но разбросана</td>
+                <td class="score-1">Информация централизована и заметна</td>
+              </tr>
+              <tr>
+                <td>Понятность инструкций, действий</td>
+                <td class="score-0">Неясно как участвовать</td>
+                <td class="score-05">Понял, но потребовалось усилие</td>
+                <td class="score-1">Понял сразу, всё ясно и доступно</td>
+              </tr>
+              <tr>
+                <td class="row-label" rowspan="2">Временно-пространственные</td>
+                <td>Согласованность расписания и пространства</td>
+                <td class="score-0">
+                  В расписании неясно, где будет активность
+                </td>
+                <td class="score-05">Есть путаница, но можно разобраться</td>
+                <td class="score-1">Расписание и локации синхронизированы</td>
+              </tr>
+              <tr>
+                <td>Простота и понятность записи на активности</td>
+                <td class="score-0">Нет записи или сложная механика записи</td>
+                <td class="score-05">Записался, но процесс неинтуитивный</td>
+                <td class="score-1">Легко записаться, понятный механизм</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Решение -->
+      <section>
+        <h2 class="section-title fade-up">Решение</h2>
+        <p class="fade-up">Методика включает:</p>
+        <ul class="fade-up">
+          <li>сценарную структуру анализа,</li>
+          <li>критерии оценки по зонам,</li>
+          <li>числовой Navigation Score,</li>
+          <li>шаблон отчёта для сравнения площадок,</li>
+          <li>рекомендации по размещению указателей и карт.</li>
+        </ul>
+        <p class="fade-up">
+          Система спроектирована так, чтобы аудит можно было провести за 1–2
+          часа без участия дизайнера.
+        </p>
+      </section>
+
+      <!-- Результаты -->
+      <section>
+        <h2 class="section-title fade-up">Результаты</h2>
+
+        <div class="split top fade-up">
+          <div>
+            <div class="result-cards">
+              <div class="result-card">
+                Создала воспроизводимую систему оценки навигации и внедрила её в
+                работу 3 отделов.
+              </div>
+              <div class="result-card">
+                9 конференций протестированы по единой методике (3 площадки).
+              </div>
+              <div class="result-card">
+                Появилась числовая метрика для сравнения навигации между
+                событиями.
+              </div>
+              <div class="result-card">
+                Оценка занимает 1–2 часа и не требует участия дизайнера.
+              </div>
+              <div class="result-card">
+                Навигация из разовой операционной задачи стала управляемым
+                стандартом подготовки мероприятий.
+              </div>
+            </div>
+          </div>
+          <figure class="split-image">
+            <img
+              src="images/nav-docs.png"
+              alt="Шаблоны оценки навигации — до и после конференции"
+            />
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <!-- CASE NAVIGATION -->
+    <div class="case-nav-wrap">
+      <nav class="case-nav">
+        <span></span>
+        <a class="case-nav-link next" href="account.html">
+          <p class="case-nav-direction">Следующий проект</p>
+          <p class="case-nav-title">Концепт личного пространства участника →</p>
+        </a>
+      </nav>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <p class="footer-cta">
+        Готова подключиться к сложным задачам и разложить их по полочкам
+      </p>
+      <div class="footer-links">
+        <a href="https://t.me/NadyaMyshk" target="_blank" rel="noopener"
+          >Telegram ↗</a
+        >
+        <a
+          href="https://disk.yandex.ru/i/yGqZMtid8uBw-g"
+          target="_blank"
+          rel="noopener"
+          >Резюме ↗</a
+        >
+        <a href="mailto:myshkovetsn&#64;yandex.ru"
+          >myshkovetsn&#64;yandex.ru ↗</a
+        >
+      </div>
+    </footer>
+
+    <script>
+      const burger = document.getElementById("burger");
+      const overlay = document.getElementById("mobileOverlay");
+      const overlayClose = document.getElementById("overlayClose");
+      burger.addEventListener("click", () => overlay.classList.add("open"));
+      overlayClose.addEventListener("click", () =>
+        overlay.classList.remove("open"),
+      );
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              observer.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0, rootMargin: "-40px 0px" },
+      );
+      document
+        .querySelectorAll(".fade-up")
+        .forEach((el) => observer.observe(el));
+      setTimeout(() => {
+        document
+          .querySelectorAll(".fade-up")
+          .forEach((el) => el.classList.add("visible"));
+      }, 1500);
+    </script>
+  </body>
+</html>
