@@ -1,536 +1,228 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Просмотренные доклады — Мышковец Надежда</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/png" href="images/favicon.png">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #F1F1F1;
-      --dark: #0f0f0f;
-      --text: #0E0E19;
-      --muted: #7A7A7A;
-      --light: #E5E5E5;
-      --divider: rgba(0,0,0,0.1);
-      --accent: #4f35d6;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    /* ==================== NAV ==================== */
-    #nav {
-      position: sticky; top: 0; z-index: 100;
-      background: #ffffff; border-bottom: 1px solid var(--divider);
-      display: flex; align-items: center; justify-content: space-between; padding: 16px 40px;
-    }
-    .nav-logo { display: flex; flex-direction: column; text-decoration: none; }
-    .nav-logo-name { font-size: 31px; font-weight: 700; color: var(--text); line-height: 1; }
-    .nav-logo-role { font-size: 16px; font-weight: 400; color: var(--muted); line-height: 1.3; }
-    .nav-links { display: flex; gap: 8px; align-items: center; }
-    .nav-links a {
-      display: inline-block; padding: 7px 16px; border-radius: 100px;
-      font-size: 14px; font-weight: 500; text-decoration: none;
-      background: rgba(0,0,0,0.07); color: var(--text); transition: background 0.2s;
-    }
-    .nav-links a:hover { background: rgba(0,0,0,0.13); }
-    .burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; }
-    .burger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; }
-
-    .mobile-overlay {
-      display: none; position: fixed; inset: 0; z-index: 200;
-      background: var(--text); flex-direction: column; justify-content: space-between; padding: 32px 40px 48px;
-    }
-    .mobile-overlay.open { display: flex; }
-    .overlay-top { display: flex; justify-content: flex-end; }
-    .overlay-close { background: none; border: none; color: #fff; font-size: 36px; cursor: pointer; line-height: 1; opacity: 0.7; }
-    .overlay-links { display: flex; flex-direction: column; gap: 16px; }
-    .overlay-links a { font-size: 30px; font-weight: 700; color: #fff; text-decoration: none; }
-    .overlay-contacts { display: flex; flex-direction: column; gap: 8px; }
-    .overlay-contacts a { font-size: 14px; color: var(--muted); text-decoration: none; }
-
-    /* ==================== CASE HEADER ==================== */
-    .case-header-wrap { border-bottom: 1px solid var(--divider); }
-    .case-header {
-      max-width: 1520px; margin: 0 auto;
-      padding: 56px 40px;
-      display: grid; grid-template-columns: 1.3fr 1fr; gap: 64px;
-    }
-    .case-h1 { font-size: 52px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; }
-    .case-subtitle { font-size: 15px; color: var(--muted); line-height: 1.65; }
-    .case-meta { border-left: 1px solid var(--divider); padding-left: 40px; }
-    .meta-item { padding: 14px 0; border-bottom: 1px solid var(--divider); }
-    .meta-item:first-child { padding-top: 0; }
-    .meta-item:last-child { border-bottom: none; }
-    .meta-label { font-size: 12px; color: var(--muted); margin-bottom: 5px; }
-    .meta-value { font-size: 14px; line-height: 1.65; }
-
-    /* ==================== CONTENT ==================== */
-    .case-content { max-width: 1520px; margin: 0 auto; padding: 72px 40px 80px; }
-    .case-content section + section { margin-top: 72px; }
-
-    h2.section-title {
-      font-size: 40px; font-weight: 700;
-      letter-spacing: -0.02em; line-height: 1.15;
-      margin-top: 72px; margin-bottom: 24px;
-    }
-    h2.section-title:first-child { margin-top: 0; }
-    h3.sub-title { font-size: 22px; font-weight: 600; margin-bottom: 14px; margin-top: 40px; }
-
-    p { font-size: 16px; line-height: 1.8; margin-bottom: 16px; }
-    p:last-child { margin-bottom: 0; }
-    ul, ol { padding-left: 20px; margin-bottom: 16px; }
-    li { font-size: 16px; line-height: 1.8; margin-bottom: 4px; }
-    strong { font-weight: 600; }
-
-    /* ==================== SPLIT ==================== */
-    .split {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 48px; align-items: center;
-      margin-top: 32px; margin-bottom: 32px;
-    }
-    .split.top { align-items: flex-start; }
-    .split-image img { width: 100%; border-radius: 20px; display: block; }
-    figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
-
-    /* ==================== PROCESS STEPS ==================== */
-    .process-steps {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 0; margin: 32px 0;
-      border: 1px solid var(--divider); border-radius: 20px; overflow: hidden;
-    }
-    .process-step {
-      padding: 28px 24px 40px;
-      border-right: 1px solid var(--divider);
-      position: relative;
-    }
-    .process-step:last-child { border-right: none; }
-    .step-accent { font-size: 16px; font-weight: 600; color: var(--accent); line-height: 1.3; margin-bottom: 4px; }
-    .step-desc { font-size: 15px; line-height: 1.5; color: var(--text); }
-    .step-bar { height: 3px; background: var(--accent); border-radius: 2px; margin: 20px 0 0; }
-    .step-num { font-size: 14px; color: var(--muted); margin-top: 8px; }
-
-    /* ==================== FLOW DIAGRAM ==================== */
-    .flow-diagram {
-      display: flex; align-items: center; gap: 0;
-      margin: 32px 0; overflow-x: auto;
-    }
-    .flow-step {
-      flex: 1; background: var(--text); color: #fff;
-      padding: 24px 20px; text-align: center;
-      font-size: 15px; font-weight: 600; line-height: 1.3;
-      border-radius: 16px;
-    }
-    .flow-step.accent { background: var(--accent); }
-    .flow-arrow {
-      width: 48px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; color: var(--text); background: none;
-    }
-
-    /* ==================== CAPABILITIES LIST ==================== */
-    .capabilities {
-      display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0;
-    }
-    .capability-tag {
-      padding: 8px 16px; border-radius: 100px;
-      background: var(--text); color: #fff;
-      font-size: 14px; font-weight: 500;
-    }
-
-    /* ==================== PROTOTYPE IMAGES ==================== */
-    .proto-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0;
-    }
-    .proto-wrap {
-      border-radius: 20px; overflow: hidden;
-      background: none;
-      padding: 0;
-    }
-    .proto-wrap img { width: 100%; display: block; border-radius: 20px; }
-
-    /* ==================== RESULT CARDS ==================== */
-    /* Сетка в две колонки */
-    .result-grid {
-     display: grid;
-     grid-template-columns: 1fr 1fr; /* Две равные колонки */
-     gap: 20px;                      /* Расстояние между карточками */
-     margin-top: 32px;
-   }
-
-   .result-card {
-     display: flex;
-     flex-direction: row; 
-     align-items: center;
-     gap: 16px;
-     background: #fff;
-     border: 1px solid var(--divider);
-     border-radius: 20px;
-     padding: 24px;
-    }
-
-   /* Тот самый квадратик для иконки */
-   .result-icon-box {
-     width: 70px;
-     height: 70px;
-     background: #F5F1FF; /* Твой цвет */
-     border-radius: 12px; /* Легкое скругление (квадрат) */
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     flex-shrink: 0;
-    }
-
-    .result-icon-box img {
-     width: 60px;
-     height: 60px;
-     object-fit: contain;
-    }
-
-    .result-text {
-     font-size: 16px;
-     line-height: 1.5;
-     margin: 0;
-     color: var(--text);
-    }
-
-
-    /* ==================== CASE NAV ==================== */
-    .case-nav-wrap { border-top: 1px solid var(--divider); }
-    .case-nav {
-      max-width: 1520px; margin: 0 auto;
-      padding: 48px 40px 80px;
-      display: flex; justify-content: space-between; align-items: flex-start; gap: 32px;
-    }
-    .case-nav-link { text-decoration: none; color: var(--text); max-width: 320px; }
-    .case-nav-link.next { text-align: right; }
-    .case-nav-direction { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
-    .case-nav-title { font-size: 18px; font-weight: 600; line-height: 1.3; }
-    .case-nav-link:hover .case-nav-title { text-decoration: underline; }
-
-    /* ==================== FOOTER ==================== */
-    footer {
-      background: var(--dark); color: #fff;
-      padding: 64px 40px;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end;
-    }
-    .footer-cta { font-size: 26px; font-weight: 600; line-height: 1.35; letter-spacing: -0.02em; }
-    .footer-links { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
-    .footer-links a { color: #fff; text-decoration: none; font-size: 15px; opacity: 0.9; transition: opacity 0.2s; }
-    .footer-links a:hover { opacity: 0.5; }
-
-    /* ==================== FADE-UP ==================== */
-    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
-    .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-    /* ==================== MOBILE ==================== */
-    
-    @media (max-width: 800px) {
-     html, body { width: 100%; overflow-x: hidden; position: relative; }
-     #nav { padding: 12px 20px; }
-     .nav-links { display: none; }
-     .burger { display: flex; }
-
-     /* Хедер кейса */
-     .case-header { grid-template-columns: 1fr; padding: 40px 20px; gap: 32px; }
-     .case-h1 { font-size: 34px; }
-     .case-meta { border-left: none; padding-left: 0; border-top: 1px solid var(--divider); padding-top: 24px; }
-
-     /* Контент */
-     .case-content { padding: 48px 20px 60px; }
-     h2.section-title { font-size: 28px; margin-top: 48px; }
-     .split { grid-template-columns: 1fr; gap: 24px; }
-     .process-steps { grid-template-columns: 1fr; }
-     .process-step { border-right: none; border-bottom: 1px solid var(--divider); }
-     .process-step:last-child { border-bottom: none; }
-
-     /* Диаграммы и прототипы */
-     .flow-diagram { flex-direction: column; }
-     .flow-arrow { width: 100%; height: 32px; transform: rotate(90deg); }
-     .proto-grid { grid-template-columns: 1fr; }
-
-     /* ТВОИ КАРТОЧКИ РЕЗУЛЬТАТОВ (в одну колонку) */
-     .result-grid { grid-template-columns: 1fr; gap: 16px; }
-     .result-card { flex-direction: column; align-items: flex-start; padding: 20px; }
-     .result-icon-box { width: 56px; height: 56px; margin-bottom: 12px; }
-
-     /* Навигация внизу и футер */
-     .case-nav { padding: 40px 20px 60px; flex-direction: column; }
-     .case-nav-link.next { text-align: left; }
-     footer { grid-template-columns: 1fr; padding: 48px 20px; }
-     .footer-links { align-items: flex-start; }
-
-     /* Зум картинок */
-     .zoomable { cursor: zoom-in; transition: opacity 0.3s; }
-     .zoomable:hover { opacity: 0.9; }
-    }
-
-  </style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav id="nav">
-  <a href="index.html" class="nav-logo">
-    <span class="nav-logo-name">Мышковец Надежда</span>
-    <span class="nav-logo-role">Product designer</span>
-  </a>
-  <div class="nav-links">
-    <a href="index.html#projects">Проекты</a>
-    <a href="https://disk.yandex.ru/i/yGqZMtid8uBw-g" target="_blank" rel="noopener">Резюме</a>
-  </div>
-  <button class="burger" id="burger" aria-label="Меню"><span></span><span></span></button>
-</nav>
-
-<!-- MOBILE OVERLAY -->
-<div class="mobile-overlay" id="mobileOverlay">
-  <div class="overlay-top"><button class="overlay-close" id="overlayClose">×</button></div>
-  <div class="overlay-links">
-    <a href="index.html#projects">Проекты</a>
-    <a href="https://disk.yandex.ru/i/yGqZMtid8uBw-g" target="_blank" rel="noopener">Резюме</a>
-  </div>
-  <div class="overlay-contacts">
-    <a href="https://t.me/NadyaMyshk" target="_blank" rel="noopener">Telegram</a>
-    <a href="mailto:myshkovetsn&#64;yandex.ru">myshkovetsn&#64;yandex.ru</a>
-  </div>
-</div>
-
-<!-- CASE HEADER -->
-<div class="case-header-wrap">
-  <header class="case-header">
-    <div>
-      <h1 class="case-h1">Просмотренные доклады</h1>
-      <p class="case-subtitle">Рост конверсии в отзывы на 34%, среднее время заполнения сократилось в 3 раза</p>
-    </div>
-    <div class="case-meta">
-      <div class="meta-item">
-        <p class="meta-label">Задача</p>
-        <p class="meta-value">увеличить долю участников, оставляющих обратную связь о докладах конференции, без существенной нагрузки на разработку.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Просмотренные доклады — Мышковец Надежда</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link rel="stylesheet" href="case-shared.css" />
+    <style>
+      /* rating.html — единственный акцент другого цвета уже в :root через case-shared,
+       здесь только специфика этой страницы */
+      :root {
+        --accent: #0e0e19;
+      }
+    </style>
+  </head>
+  <body>
+    <nav id="nav">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-name">Мышковец Надежда</span>
+        <span class="nav-logo-role">Product designer</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#projects">Проекты</a>
+        <a href="https://disk.yandex.ru/d/tPOqESseJCzjCw" target="_blank" rel="noopener">Резюме</a>
       </div>
-      <div class="meta-item">
-        <p class="meta-label">О проекте</p>
-        <p class="meta-value">участники получали длинную форму с 80 вопросами после конференции, что снижало конверсию до 12%, а спикеры не получали достоверной обратной связи.</p>
+      <button class="burger" id="burger" aria-label="Меню"><span></span><span></span></button>
+    </nav>
+
+    <div class="mobile-overlay" id="mobileOverlay">
+      <div class="overlay-top"><button class="overlay-close" id="overlayClose">×</button></div>
+      <div class="overlay-links">
+        <a href="index.html#projects">Проекты</a>
+        <a href="https://disk.yandex.ru/d/tPOqESseJCzjCw" target="_blank" rel="noopener">Резюме</a>
       </div>
-      <div class="meta-item">
-        <p class="meta-label">Решение</p>
-        <p class="meta-value">добавлен подраздел «Просмотренные доклады» в расписании, где участник видит только свои доклады и может оценить их с помощью быстрых реакций и необязательного комментария — оценка интегрирована в естественный сценарий участия в конференции.</p>
-      </div>
-      <div class="meta-item">
-        <p class="meta-label">Статус</p>
-        <p class="meta-value">решение реализовано, увеличило долю отзывов с 12% до 34%, среднее время заполнения сократилось с 12 до 3–4 минут.</p>
+      <div class="overlay-contacts">
+        <a href="https://t.me/NadyaMyshk" target="_blank" rel="noopener">Telegram</a>
+        <a href="mailto:myshkovetsn&#64;yandex.ru">myshkovetsn&#64;yandex.ru</a>
       </div>
     </div>
-  </header>
-</div>
 
-<!-- CONTENT -->
-<main class="case-content">
-
-  <!-- Контекст -->
-  <section>
-    <div class="split fade-up">
-      <div>
-        <h2 class="section-title" style="margin-top:0;">Контекст</h2>
-        <p>Качество докладов — один из ключевых факторов NPS конференции. Без достоверной обратной связи от участников программный комитет не может принимать обоснованные решения о спикерах и темах. Компания, организующая конференции, собирает обратную связь о докладах, чтобы улучшать программу и работу со спикерами.</p>
-        <p>Старая форма оценки была <strong>слишком длинной и стандартизированной</strong>, не отражала реальный опыт участников. Участники теряли время на поиск своих докладов, а данные теряли точность.</p>
-        <!-- Моя роль -->
-  <section>
-    <h2 class="section-title fade-up">Моя роль</h2>
-    <p class="role-label fade-up" style="font-size:14px;font-weight:600;margin-bottom:8px;">Product Designer</p>
-    <ul class="fade-up">
-      <li>провела исследование: интервью с участниками и анализ прошлых опросов — выяснила, где процесс ломается;</li>
-      <li>нашла решение в рамках существующей архитектуры, чтобы разработчики собрали его за 3 дня;</li>
-      <li>встроила оценку в уже существующий сценарий просмотра докладов — без новых точек входа.</li>
-    </ul>
-  </section>
-      </div>
-      <figure class="split-image">
-        <img src="images/rating-laptop.png" alt="Старая форма оценки докладов на ноутбуке" class="zoomable">
-      </figure>
+    <div class="case-cover">
+      <img src="images/rating-cover.jpg" alt="Просмотренные доклады" />
     </div>
-  </section>
 
-  
+    <div class="case-header-wrap">
+      <header class="case-header">
+        <div class="case-header-left"></div>
+        <div class="case-header-right">
+          <h1 class="case-h1">Просмотренные доклады: рост конверсии в отзывы на 34%</h1>
+          <p class="case-subtitle">
+            Участники не отвечали на анкеты — не потому что ленились, а потому что искать нужный доклад в списке из 80 позиций было слишком дорого. Я встроила оценку прямо в расписание — конверсия
+            выросла в 3 раза за 3 дня разработки.
+          </p>
+          <div class="stats-row fade-up">
+            <div class="stat-item">
+              <div class="stat-value">+22%</div>
+              <div class="stat-label">Конверсия</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">3×</div>
+              <div class="stat-label">Быстрее заполнение формы</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">3 дня</div>
+              <div class="stat-label">на разработку решения</div>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
 
-  <!-- Проблема -->
-  <section>
-    <h2 class="section-title fade-up">Проблема</h2>
-    <p class="fade-up"><strong>После конференции команда получала мало отзывов (конверсия всего 12%):</strong> старая форма была большой, стандартизированной, не связанной с экосистемой личного кабинета и не отражала реальный опыт участников.</p>
-    <p class="fade-up">Участникам приходилось вручную искать доклады, на которых они были, что создавало высокий порог входа.</p>
-    <p class="fade-up">Из-за утомительного процесса часть спикеров <strong>не получала обратной связи вовсе</strong>, а данные <strong>теряли точность</strong>.</p>
-  </section>
+    <main class="case-content">
+      <!-- Коротко о проекте -->
+      <section>
+        <div class="brief-grid fade-up">
+          <div class="brief-left">
+            <h2 class="section-title">Коротко о проекте</h2>
+            <p>После конференции участники получали письмо со ссылкой на оценку. Раньше она вела на общую анкету — теперь на персонализированный раздел «Просмотренные доклады» прямо в расписании.</p>
+            <p>Участник видит только те сессии, где был сам, и оценивает в один клик.</p>
+          </div>
+          <div class="brief-right">
+            <!-- сюда схема было/стало или картинка -->
+            <img src="images/rating-solution.png" alt="Решение" class="zoomable" style="border-radius: 0px" />
+          </div>
+        </div>
+      </section>
 
-  <!-- Цель -->
-  <section>
-    <h2 class="section-title fade-up">Цель</h2>
-    <p class="fade-up">Повысить количество отзывов, сохранив ценность данных и минимизировав нагрузку на разработку.</p>
-    <p class="fade-up"><strong>Дополнительное ограничение:</strong> до начала сезона конференций оставались недели, команда разработки была загружена — решение должно было вписаться в существующую архитектуру.</p>
-  </section>
+      <!-- Проблема -->
+      <section>
+        <div class="split top fade-up">
+          <figure class="split-image">
+            <img src="images/rating-laptop.png" alt="Старая форма оценки" class="zoomable" />
+          </figure>
+          <div>
+            <h2 class="section-title">Проблема</h2>
+            <p>Качество докладов — один из ключевых факторов NPS конференции. Без достоверной обратной связи программный комитет не может принимать обоснованные решения о спикерах и темах.</p>
+            <p>Существующая система сбора отзывов эту задачу не решала:</p>
+            <ul>
+              <li><strong>Анкета на 80 вопросов.</strong> Участники открывали, видели объём и закрывали.</li>
+              <li><strong>Разрыв контекста:</strong> нужно вручную найти доклады в общем списке — высокий порог ещё до первого ответа.</li>
+              <li><strong>Итог:</strong> конверсия 12%, спикеры не получали фидбек.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
-  <!-- Процесс -->
-  <section>
-    <h2 class="section-title fade-up">Процесс работы</h2>
-    <img src="images/rating-flow.png" alt="Процесс" style="width:100%; border-radius:20px;">
-
-
-    <div class="split fade-up">
-      <div>
+      <!-- Моя роль -->
+      <section class="fade-up">
+        <h2 class="section-title">Моя роль</h2>
+        <p style="font-size: 14px; font-weight: 600; color: var(--muted); margin-bottom: 12px">Product Designer</p>
+        <p>Ключевое решение — не строить новое, а переосмыслить существующее.</p>
         <ul>
-          <li>Провела интервью с участниками и разобрала результаты прошлых опросов.</li>
-          <li>Главный барьер: форма не соответствовала личному опыту — участникам приходилось вручную искать свои доклады в длинном общем списке.</li>
-          <li>Вывод: люди готовы оставлять отзывы, если процесс занимает меньше минуты и не требует усилий.</li>
+          <li>провела исследование (интервью + анализ опросов) и выявила ключевые барьеры;</li>
+          <li>предложила решение в рамках текущей архитектуры — 3 дня разработки;</li>
+          <li>интегрировала оценку в существующий сценарий без новых точек входа.</li>
         </ul>
+      </section>
+
+      <!-- Исследование -->
+      <section>
+        <h2 class="section-title fade-up">Исследование и работа с ограничениями</h2>
+        <div class="split top fade-up">
+          <div>
+            <h3 class="sub-title fade-up" style="margin-top: 0">Исследование</h3>
+            <p>
+              Провела интервью с участниками и разобрала результаты прошлых опросов. Гипотеза подтвердилась: люди не отказывались от фидбека из-за лени — они отказывались из-за высокой стоимости
+              действия. Найти нужный доклад в длинном общем списке занимало время и требовало усилий ещё до начала заполнения.
+            </p>
+            <p class="highlight">Участники не ленились давать фидбек — они просто не хотели тратить 10 минут на поиск «того самого» доклада в списке из 80 позиций.</p>
+            <h3 class="sub-title fade-up">Работа с ограничениями</h3>
+            <p>
+              До начала сезона конференций оставались недели. Команда разработки была загружена. Ограничение стало фильтром: если решение нельзя собрать из того, что уже есть — оно слишком дорогое.
+            </p>
+            <p>Мы уложились в 3 дня именно потому, что не проектировали новое — переиспользовали текущую дизайн-систему. Эмодзи-реакции уже использовались в двух других местах платформы.</p>
+          </div>
+          <figure class="split-image research-photo">
+            <img src="images/rating-research.avif" alt="Интервью с участниками" class="zoomable" />
+            <figcaption>Интервью с участниками конференции</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Решение -->
+      <section class="fade-up">
+        <h2 class="section-title">Решение</h2>
+        <figure class="full-media" style="margin-top: 32px">
+          <video src="images/rating-scenario.mov" autoplay muted loop playsinline preload="metadata"></video>
+        </figure>
+        <h3 class="sub-title">Три принципа, которые сделали это рабочим:</h3>
+        <ul>
+          <li><strong>Персонализация</strong> — больше не нужно искать доклады в общем списке на 80+ позиций.</li>
+          <li><strong>Встроен в привычный сценарий</strong> — открывает расписание, видит свои доклады, оценивает без переключения контекста.</li>
+          <li><strong>Быстрые реакции</strong> — эмодзи-компоненты из уже существующей дизайн-системы, разработчикам не пришлось писать новый код.</li>
+        </ul>
+      </section>
+
+      <!-- Выводы -->
+      <section>
+        <h2 class="section-title fade-up">Выводы</h2>
+        <!-- Что я вынесла -->
+        <section class="fade-up">
+          <div class="takeaway-section">
+            <p class="takeaway-label">Что я вынесла из этого проекта</p>
+            <div class="takeaway-body">
+              <p class="takeaway-text">Иногда самое сильное решение — убрать шаг, а не добавить функцию.</p>
+            </div>
+            <p class="takeaway-sub">
+              Рост метрик был достигнут не за счёт новых функций, а за счёт точечного изменения сценария. Перенос оценки в контекст использования убрал главный барьер — поиск — и дал компании то, чего
+              не было раньше: стабильную обратную связь по каждому докладу.
+            </p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div class="case-nav-wrap">
+      <nav class="case-nav">
+        <a class="case-nav-link" href="account.html">
+          <p class="case-nav-direction">← Предыдущий проект</p>
+          <p class="case-nav-title">Концепт личного пространства участника</p>
+        </a>
+        <a class="case-nav-link next" href="index.html#projects">
+          <p class="case-nav-direction">Все проекты</p>
+          <p class="case-nav-title">На главную →</p>
+        </a>
+      </nav>
+    </div>
+
+    <footer>
+      <p class="footer-cta">Готова подключиться к сложным задачам и разложить их по полочкам</p>
+      <div class="footer-links">
+        <a href="https://t.me/NadyaMyshk" target="_blank" rel="noopener">Telegram <span class="arr">↗</span></a>
+        <a href="https://disk.yandex.ru/d/tPOqESseJCzjCw" target="_blank" rel="noopener">Резюме <span class="arr">↗</span></a>
+        <a href="mailto:myshkovetsn&#64;yandex.ru">myshkovetsn&#64;yandex.ru <span class="arr">↗</span></a>
       </div>
-      <figure class="split-image">
-        <img src="images/rating-research.avif" alt="Интервью с участниками конференции" class="zoomable">
-      </figure>
-    </div>
-  </section>
+    </footer>
 
-  <!-- Формирование решения -->
-  <section>
-    <h2 class="section-title fade-up">Формирование решения</h2>
-    <p class="fade-up">Вместо отдельной формы — встроили оценку прямо в расписание: участник видит только свои доклады и оценивает их в один клик.</p>
-    <ul class="fade-up">
-      <li>Добавлен подраздел <strong>«Просмотренные доклады»</strong>, показывающий только доклады, на которых был участник.</li>
-      <li>Минимум кликов: расписание → просмотренные доклады → оценка.</li>
-    </ul>
+    <script>
+      const burger = document.getElementById("burger");
+      const overlay = document.getElementById("mobileOverlay");
+      const overlayClose = document.getElementById("overlayClose");
+      burger.addEventListener("click", () => overlay.classList.add("open"));
+      overlayClose.addEventListener("click", () => overlay.classList.remove("open"));
 
-    <div class="flow-diagram fade-up">
-      <div class="flow-step">Персонализированная ссылка на Email</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step">Просмотренные доклады</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step accent">Оценка</div>
-    </div>
+      const io = new IntersectionObserver(
+        (ee) =>
+          ee.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              io.unobserve(e.target);
+            }
+          }),
+        { threshold: 0, rootMargin: "-40px 0px" },
+      );
+      document.querySelectorAll(".fade-up").forEach((el) => io.observe(el));
+      setTimeout(() => document.querySelectorAll(".fade-up").forEach((el) => el.classList.add("visible")), 1500);
+    </script>
 
-    <h3 class="sub-title fade-up">Возможности</h3>
-    <div class="capabilities fade-up">
-      <span class="capability-tag">необязательный комментарий</span>
-      <span class="capability-tag">редактирование оценки</span>
-      <span class="capability-tag">быстрые реакции с эмодзи</span>
-    </div>
-  </section>
-
-  <!-- Дизайн -->
-  <section>
-    <h2 class="section-title fade-up">Дизайн и прототипирование</h2>
-    <div class="proto-grid fade-up">
-      <div class="proto-wrap">
-        <img src="images/rating-proto1.png" alt="Прототип — список просмотренных докладов" class="zoomable">
-      </div>
-      <div class="proto-wrap">
-        <img src="images/rating-proto2.png" alt="Прототип — форма оценки доклад" class="zoomable">
-      </div>
-    </div>
-    <ul class="fade-up">
-      <li>Эмодзи и короткие подписи упрощают мобильный сценарий.</li>
-      <li>Пользователь видит только свои доклады и может при желании изменить отзыв.</li>
-      <li>Решение реализовано в рамках текущей дизайн-системы без новых кастомных элементов.</li>
-    </ul>
-  </section>
-
-  <!-- Результаты -->
-  <section>
-  <h2 class="section-title fade-up">Результаты</h2>
-  
-  <div class="result-grid fade-up">
-    
-    <div class="result-card">
-      <div class="result-icon-box">
-        <img src="images/icon-shorter form.svg" alt="Shorter form">
-      </div>
-      <p class="result-text">+34% участников завершили оценку (feedback submissions)</p>
-    </div>
-
-    <div class="result-card">
-      <div class="result-icon-box">
-        <img src="images/icon-timer.svg" alt="Timer">
-      </div>
-      <p class="result-text">Среднее время заполнения сократилось с ~12 до 3–4 минут</p>
-    </div>
-
-    <div class="result-card">
-      <div class="result-icon-box">
-        <img src="images/icon-form.svg" alt="Form">
-      </div>
-      <p class="result-text">Пользователи уже отмечали удобство и охотнее делились отзывами</p>
-    </div>
-
-    <div class="result-card">
-      <div class="result-icon-box">
-        <img src="images/icon-faster coding.svg" alt="Faster coding">
-      </div>
-      <p class="result-text">Решение потребовало минимальных усилий от разработчиков</p>
-    </div>
-
-  </div>
-</section>
-
-</main>
-
-<!-- CASE NAVIGATION -->
-<div class="case-nav-wrap">
-  <nav class="case-nav">
-    <a class="case-nav-link" href="account.html">
-      <p class="case-nav-direction">← Предыдущий проект</p>
-      <p class="case-nav-title">Концепт личного пространства участника</p>
-    </a>
-    <a class="case-nav-link next" href="index.html#projects">
-      <p class="case-nav-direction">Все проекты</p>
-      <p class="case-nav-title">На главную →</p>
-    </a>
-  </nav>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <p class="footer-cta">Готова подключиться к сложным задачам и разложить их по полочкам</p>
-  <div class="footer-links">
-    <a href="https://t.me/NadyaMyshk" target="_blank" rel="noopener">Telegram ↗</a>
-    <a href="https://disk.yandex.ru/i/yGqZMtid8uBw-g" target="_blank" rel="noopener">Резюме ↗</a>
-    <a href="mailto:myshkovetsn&#64;yandex.ru">myshkovetsn&#64;yandex.ru ↗</a>
-  </div>
-</footer>
-
-<script>
-  const burger = document.getElementById('burger');
-  const overlay = document.getElementById('mobileOverlay');
-  const overlayClose = document.getElementById('overlayClose');
-  burger.addEventListener('click', () => overlay.classList.add('open'));
-  overlayClose.addEventListener('click', () => overlay.classList.remove('open'));
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-    });
-  }, { threshold: 0, rootMargin: '-40px 0px' });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-  setTimeout(() => { document.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible')); }, 1500);
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script>
-<script>
-  // Важно: название функции пишется слитно - mediumZoom
-  const zoom = mediumZoom('.zoomable', {
-    margin: 24,
-    background: '#fff',
-    scrollOffset: 0
-  });
-</script>
-
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script>
+    <script>
+      mediumZoom(".zoomable", { margin: 24, background: "#fff", scrollOffset: 0 });
+    </script>
+  </body>
 </html>

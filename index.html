@@ -2,7 +2,7 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Мышковец Надежда — Product Designer</title>
     <meta name="description" content="Мышковец Надежда — Product Designer с опытом в B2C-продуктах" />
     <meta property="og:title" content="Мышковец Надежда — Product Designer" />
@@ -22,32 +22,20 @@
         padding: 0;
       }
 
-      /*
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    ТИПОГРАФИКА — единая система
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    Дисплей (hero-имя в шапке): 31px / 700
-    Дисплей (секция "Проекты"):  64px / 700  letter-spacing: -0.03em
-    Карточка — заголовок:        28px / 600  letter-spacing: -0.02em
-    Карточка — описание:         15px / 400
-    Hero bio:                    17px / 400  leading: 1.65
-    Навигация:                   14px / 500
-    Подпись (muted):             15px / 400
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    */
-
       :root {
-        --bg: #f1f1f1;
+        --bg: #f5f5f7; /* Apple светло-серый */
+        --white: #ffffff;
         --dark: #0e0e19;
-        --text: #0e0e19;
-        --muted: #7a7a7a;
-        --border: rgba(0, 0, 0, 0.1);
+        --text: #1d1d1f; /* Apple почти-чёрный */
+        --muted: #6e6e73; /* Apple серый */
+        --divider: rgba(0, 0, 0, 0.08);
+        --accent: #0e0e19;
+        --radius: 20px;
       }
 
       html {
         scroll-behavior: smooth;
       }
-
       body {
         font-family: "Inter", sans-serif;
         background: var(--bg);
@@ -56,29 +44,28 @@
         overflow-x: hidden;
       }
 
-      /* ══════════════════════════════
-       NAV
-       ══════════════════════════════ */
+      /* ══════════════════════ NAV ══════════════════════ */
       .site-nav {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         z-index: 200;
-        padding: 20px 40px;
+        padding: 20px 48px;
         display: flex;
         align-items: center;
-        /* кнопки по центру относительно всего лого */
         justify-content: space-between;
         transition:
           background 0.35s,
+          backdrop-filter 0.35s,
           border-color 0.35s;
         border-bottom: 1px solid transparent;
       }
-
       .site-nav.solid {
-        background: #ffffff;
-        border-color: var(--border);
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: saturate(180%) blur(20px);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        border-color: var(--divider);
       }
 
       .nav-logo {
@@ -86,32 +73,28 @@
         display: flex;
         flex-direction: column;
       }
-
       .nav-logo-name {
         font-weight: 700;
-        line-height: 1.15;
         font-size: 31px;
+        line-height: 1.1;
         color: #fff;
         transition:
           font-size 0.35s,
           color 0.35s;
       }
-
       .nav-logo-role {
         font-size: 16px;
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.65);
+        max-height: 26px;
+        overflow: hidden;
         transition:
           max-height 0.35s,
           opacity 0.35s;
-        max-height: 28px;
-        overflow: hidden;
       }
-
       .site-nav.solid .nav-logo-name {
         font-size: 15px;
         color: var(--text);
       }
-
       .site-nav.solid .nav-logo-role {
         max-height: 0;
         opacity: 0;
@@ -122,25 +105,24 @@
         gap: 8px;
         list-style: none;
       }
-
       .nav-pill {
         font-size: 14px;
         font-weight: 500;
         text-decoration: none;
-        border-radius: 20px;
+        border-radius: 100px;
         padding: 7px 18px;
-        background: rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.15);
         color: #fff;
-        transition: opacity 0.2s;
+        transition:
+          background 0.2s,
+          color 0.2s;
       }
-
       .site-nav.solid .nav-pill {
-        background: rgba(0, 0, 0, 0.07);
+        background: rgba(0, 0, 0, 0.06);
         color: var(--text);
       }
-
       .nav-pill:hover {
-        opacity: 0.65;
+        opacity: 0.7;
       }
 
       .nav-burger {
@@ -152,7 +134,6 @@
         border: none;
         padding: 4px;
       }
-
       .nav-burger span {
         display: block;
         width: 24px;
@@ -161,7 +142,6 @@
         border-radius: 2px;
         transition: background 0.3s;
       }
-
       .site-nav.solid .nav-burger span {
         background: var(--text);
       }
@@ -173,16 +153,14 @@
         z-index: 190;
         background: var(--dark);
         flex-direction: column;
-        padding: 100px 32px 40px;
+        padding: 100px 32px 48px;
         opacity: 0;
         transition: opacity 0.25s;
       }
-
       .nav-overlay.open {
         display: flex;
         opacity: 1;
       }
-
       .nav-overlay .ol-link {
         font-size: 30px;
         font-weight: 700;
@@ -191,22 +169,19 @@
         margin-bottom: 20px;
         display: block;
       }
-
       .overlay-contacts {
         margin-top: 40px;
         padding-top: 24px;
-        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
         display: flex;
         flex-direction: column;
       }
-
       .overlay-contacts a {
         font-size: 15px;
-        color: rgba(255, 255, 255, 0.55);
+        color: rgba(255, 255, 255, 0.45);
         text-decoration: none;
         margin-bottom: 12px;
       }
-
       .close-btn {
         position: absolute;
         top: 20px;
@@ -219,208 +194,183 @@
         line-height: 1;
       }
 
-      /* ══════════════════════════════
-       HERO — ровно 100vh, лицо сверху
-       ══════════════════════════════ */
+      /* ══════════════════════ HERO ══════════════════════ */
       .hero {
         position: relative;
         width: 100%;
         height: 100vh;
-        /* ровно один экран */
         overflow: hidden;
         background: #111;
       }
-
       .hero-bg {
-        /* портретное фото: якорим сверху чтобы лицо было видно */
         position: absolute;
-        top: 0;
-        /* Убираем 200, прижимаем к самому верху */
-        left: 0;
+        inset: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
-
-        /* Смещаем фокус: по горизонтали центр, по вертикали 15% (поднимаем лицо вверх) */
         object-position: center 45%;
-        animation: heroIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        animation: heroIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
       }
-
       @keyframes heroIn {
         from {
           transform: scale(1.06);
           opacity: 0;
         }
-
         to {
           transform: scale(1);
           opacity: 1;
         }
       }
-
       .hero-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.05) 50%, transparent 100%);
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.1) 45%, transparent 70%);
       }
-
       .hero-text {
         position: absolute;
-        bottom: 48px;
-        left: 40px;
-        right: 40px;
-        max-width: 560px;
+        bottom: 56px;
+        left: 48px;
+        max-width: 600px;
         color: #fff;
-        animation: textIn 0.9s 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        animation: textIn 1s 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
       }
-
       .hero-text p {
-        font-size: 17px;
+        font-size: 18px;
         line-height: 1.65;
       }
-
       @keyframes textIn {
         from {
           opacity: 0;
-          transform: translateY(18px);
+          transform: translateY(20px);
         }
-
         to {
           opacity: 1;
           transform: none;
         }
       }
 
-      /* ══════════════════════════════
-       PROJECTS
-       ══════════════════════════════ */
+      /* ══════════════════════ PROJECTS ══════════════════════ */
       #projects {
-        padding: 120px 40px;
+        padding: 120px 48px;
         max-width: 1540px;
         margin: 0 auto;
       }
 
+      .section-eyebrow {
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 12px;
+      }
+      .section-headline {
+        font-size: 80px;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        margin-bottom: 40px;
+      }
+      .section-sub {
+        font-size: 17px;
+        color: var(--muted);
+        margin-bottom: 72px;
+      }
+
+      /* Карточки */
       .projects-list {
         display: flex;
         flex-direction: column;
-        gap: 32px;
-        /* Увеличили зазор между карточками */
+        gap: 20px;
       }
 
       .p-card {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0;
         min-height: 480px;
-        border-radius: 32px;
-        /* Более мягкие углы */
+        border-radius: 20px;
         overflow: hidden;
         text-decoration: none;
         color: inherit;
-        background: #ffffff;
-        /* Всегда белый фон */
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        background: var(--white);
         transition:
           transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
           box-shadow 0.4s ease;
       }
-
-      /* Дисплей-заголовок секции */
-      .section-title {
-        font-size: 64px;
-        font-weight: 700;
-        letter-spacing: -0.03em;
-        line-height: 1.05;
-        margin-bottom: 8px;
+      .p-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.1);
+      }
+      .p-card.img-left .p-image {
+        order: -1;
       }
 
-      .section-sub {
-        font-size: 15px;
-        color: var(--muted);
-        margin-bottom: 48px;
-      }
-
-      .projects-list {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      /* Текстовая панель */
       .p-text {
-        padding: 64px;
-        /* Больше воздуха внутри */
+        padding: 64px 56px;
         display: flex;
         flex-direction: column;
         justify-content: center;
       }
-
-      .p-text-inner {
-        position: relative;
-        z-index: 1;
+      .p-eyebrow {
+        font-size: 12px !important;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 16px;
       }
-
-      /* Карточка — заголовок: 28px semibold (увеличен с 23px) */
       .p-text h3 {
-        font-size: 28px;
-        font-weight: 600;
+        font-size: 32px;
+        font-weight: 700;
         letter-spacing: -0.025em;
-        line-height: 1.25;
-        margin-bottom: 14px;
+        line-height: 1.2;
+        margin-bottom: 16px;
       }
-
       .p-card:hover .p-text h3 {
         text-decoration: underline;
         text-underline-offset: 3px;
       }
-
       .p-text p {
-        font-size: 15px;
+        font-size: 16px;
         color: var(--muted);
         line-height: 1.7;
-        margin-bottom: 28px;
+        margin-bottom: 32px;
       }
-
       .p-cta {
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 500;
-        color: var(--text);
+        color: var(--accent);
         display: inline-flex;
         align-items: center;
         gap: 6px;
         opacity: 0;
-        transform: translateX(-6px);
+        transform: translateX(-8px);
         transition:
           opacity 0.25s,
           transform 0.25s;
       }
-
       .p-card:hover .p-cta {
         opacity: 1;
         transform: none;
       }
 
-      /* Фото-панель: скруглена со всех сторон */
       .p-image {
         position: relative;
         overflow: hidden;
-        width: 100%;
-        aspect-ratio: 1.2 / 1;
-        background: #1a1020;
-        border-radius: 20px;
-        /* скругление всех углов */
+        background: #e8e8ed;
       }
+      /* Фон — растягивается на всю область, статичный */
+.img-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
-      .img-bg {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
-
-      .img-ui {
+/* UI — показывается в натуральном размере, не обрезается */
+.img-ui {
         position: absolute;
         bottom: 0;
         width: 100%;
@@ -428,20 +378,20 @@
         object-fit: contain;
         display: block;
         transform-origin: bottom;
-        transform: scale(0.9);
+        transform: scale(0.95);
         transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform; /* подсказка браузеру — плавнее */
       }
-
       .p-card:hover .img-ui {
-        transform: scale(1);
+        transform: scale(1.04);
       }
 
       /* ══════════════════════════════
-       ОПЫТ РАБОТЫ
-       ══════════════════════════════ */
+    ОПЫТ РАБОТЫ
+    ══════════════════════════════ */
       .experience-section {
         max-width: 1540px;
-        margin: 160px auto;
+        margin: 0 auto;
         padding: 0 40px;
         display: grid;
         grid-template-columns: 1fr 1.5fr;
@@ -568,7 +518,7 @@
       }
 
       /* ══════════════════════════════
-       PHOTO CARDS — ровно 100vh, лицо сверху
+       PHOTO CARDS — карточки с моими фотографиями
        ══════════════════════════════ */
       #about-me {
         padding: 160px 20px; /* Тот самый отступ, который мы выбрали */
@@ -636,155 +586,124 @@
         min-height: 40px; /* Резервируем место под 2 строки, чтобы карточки были одной высоты */
       }
 
-      /* ══════════════════════════════
-       FOOTER
-       ══════════════════════════════ */
+      /* ══════════════════════ FOOTER ══════════════════════ */
       .site-footer {
         background: var(--dark);
         color: #fff;
-        padding: 64px 40px;
+        padding: 80px 48px;
         display: grid;
         grid-template-columns: 1fr auto;
         align-items: center;
         gap: 40px;
       }
-
-      .site-footer h2 {
-        font-size: 28px;
-        font-weight: 500;
+      .footer-headline {
+        font-size: 36px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
         line-height: 1.3;
-        max-width: 500px;
+        max-width: 520px;
       }
-
       .footer-links {
         display: flex;
         flex-direction: column;
         gap: 14px;
         align-items: flex-end;
       }
-
       .footer-links a {
         font-size: 15px;
         font-weight: 500;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.55);
         text-decoration: none;
         display: flex;
         align-items: center;
         gap: 8px;
         transition: color 0.2s;
       }
-
       .footer-links a:hover {
         color: #fff;
       }
-
       .arr {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         width: 22px;
         height: 22px;
-        border: 1 px solid currentColor;
+        border: 1.5px solid currentColor;
         border-radius: 50%;
         font-size: 11px;
         font-weight: 700;
         opacity: 0.6;
-        transition: opacity 0.2s;
         flex-shrink: 0;
+        transition: opacity 0.2s;
       }
-
       .footer-links a:hover .arr {
         opacity: 1;
       }
 
-      /* Fade-up */
+      /* ══════════════════════ FADE-UP ══════════════════════ */
       .fade-up {
         opacity: 0;
-        transform: translateY(28px);
+        transform: translateY(32px);
         transition:
-          opacity 0.7s ease,
-          transform 0.7s ease;
+          opacity 0.75s ease,
+          transform 0.75s ease;
       }
-
       .fade-up.in {
         opacity: 1;
         transform: none;
       }
 
-      /* ══════════════════════════════
-       МОБИЛЬНАЯ ВЕРСИЯ
-       ══════════════════════════════ */
+      /* ══════════════════════ MOBILE ══════════════════════ */
       @media (max-width: 800px) {
         html,
         body {
           width: 100%;
           overflow-x: hidden;
-          position: relative;
         }
-
         .site-nav {
           padding: 16px 20px;
-          width: 100%;
         }
-
         .nav-links {
           display: none;
         }
-
         .nav-burger {
           display: flex;
         }
 
-        .hero {
-          height: auto;
-          min-height: 80vh;
-        }
-
         .hero-text {
           left: 20px;
-          right: 20px;
-          bottom: 28px;
-          width: auto;
+          bottom: 32px;
         }
-
         .hero-text p {
           font-size: 16px;
-          line-height: 1.5;
         }
 
         #projects {
-          padding: 60px 16px;
-          width: 100%;
+          padding: 120px 48px;
         }
-
-        .section-title {
-          font-size: 36px;
-          line-height: 1.1;
+        .section-headline {
+          font-size: 44px;
+        }
+        .section-sub {
+          margin-bottom: 40px;
         }
 
         .p-card {
           grid-template-columns: 1fr;
           min-height: auto;
-          width: 100%;
         }
-
         .p-card.img-left .p-image {
           order: 0;
         }
-
         .p-image {
-          aspect-ratio: 1 / 1;
-          min-height: auto;
+          min-height: 260px;
         }
-
         .p-text {
-          padding: 32px 20px;
+          padding: 36px 24px;
         }
-
         .p-text h3 {
-          font-size: 22px;
+          font-size: 24px;
         }
-
         .p-cta {
           opacity: 1;
           transform: none;
@@ -852,16 +771,17 @@
 
         .site-footer {
           grid-template-columns: 1fr;
-          padding: 40px 20px;
-          width: 100%;
+          padding: 56px 20px;
         }
         .footer-links {
           align-items: flex-start;
         }
+        .footer-headline {
+          font-size: 26px;
+        }
       }
     </style>
   </head>
-
   <body>
     <nav class="site-nav" id="mainNav">
       <a href="index.html" class="nav-logo">
@@ -870,7 +790,7 @@
       </a>
       <ul class="nav-links">
         <li><a class="nav-pill" href="#projects">Проекты</a></li>
-        <li><a class="nav-pill" href="https://disk.yandex.ru/i/yGqZMtid8uBw-g" target="_blank">Резюме</a></li>
+        <li><a class="nav-pill" href="https://disk.yandex.ru/d/tPOqESseJCzjCw" target="_blank">Резюме</a></li>
       </ul>
       <button class="nav-burger" id="burgerBtn" aria-label="Меню"><span></span><span></span><span></span></button>
     </nav>
@@ -878,44 +798,37 @@
     <div class="nav-overlay" id="navOverlay">
       <button class="close-btn" id="closeBtn">×</button>
       <a class="ol-link" href="#projects" id="olProjects">Проекты</a>
-      <a class="ol-link" href="https://disk.yandex.ru/i/yGqZMtid8uBw-g" target="_blank">Резюме</a>
+      <a class="ol-link" href="https://disk.yandex.ru/d/tPOqESseJCzjCw" target="_blank">Резюме</a>
       <div class="overlay-contacts">
         <a href="https://t.me/NadyaMyshk" target="_blank">Telegram</a>
         <a href="mailto:myshkovetsn&#64;yandex.ru">myshkovetsn&#64;yandex.ru</a>
       </div>
     </div>
 
-    <!-- HERO: ровно 100vh, лицо сверху -->
+    <!-- HERO -->
     <div class="hero">
       <img class="hero-bg" src="images/hero.avif" alt="Мышковец Надежда" />
       <div class="hero-overlay"></div>
       <div class="hero-text">
         <p>
-          Product Designer с опытом в B2C-продуктах. Проектирую сложные интерфейсы на основе UX-исследований и данных. Работаю с полным продуктовым циклом — от пользовательских интервью до
-          тестирования и внедрения решений.
+          Product Designer с опытом в B2C-продуктах. Проектирую сложные интерфейсы на основе UX-исследований и данных. Работаю с полным продуктовым циклом — от пользовательских интервью до
+           тестирования и внедрения решений.
         </p>
       </div>
     </div>
 
-    <!-- Полосы -->
-    <div class="global-grid-lines">
-      <div class="g-line"></div>
-      <div class="g-line"></div>
-      <div class="g-line"></div>
-    </div>
-
+    <!-- PROJECTS -->
     <section id="projects">
-      <h2 class="section-title fade-up">Проекты</h2>
-      <p class="section-sub fade-up">Избранные работы</p>
+      <p class="section-eyebrow fade-up">Избранные работы</p>
+      <h2 class="section-headline fade-up">Проекты</h2>
+
       <div class="projects-list">
-        <!-- 3: текст слева, фото справа -->
         <a class="p-card fade-up" href="rating.html">
           <div class="p-text">
-            <div class="p-text-inner">
-              <h3>Просмотренные доклады</h3>
-              <p>Рост конверсии в отзывы на 34%, среднее время заполнения сократилось в 3 раза</p>
-              <span class="p-cta">Смотреть проект →</span>
-            </div>
+            <p class="p-eyebrow">UX Research · Product Design</p>
+            <h3>Просмотренные доклады: рост конверсии в отзывы на 34%</h3>
+            <p>Участники не отвечали на анкеты — не потому что ленились, а потому что искать нужный доклад в списке из 80 позиций было слишком дорого. Я встроила оценку прямо в расписание — конверсия выросла в 3 раза.</p>
+            <span class="p-cta">Смотреть проект →</span>
           </div>
           <div class="p-image">
             <img class="img-bg" src="images/rating-bg.avif" alt="" />
@@ -923,14 +836,12 @@
           </div>
         </a>
 
-        <!-- 2: фото слева, текст справа -->
         <a class="p-card img-left fade-up" href="account.html">
           <div class="p-text">
-            <div class="p-text-inner">
-              <h3>Концепт личного пространства</h3>
-              <p>Создала прототип персонализированного кабинета участника конференции для проверки 5 гипотез</p>
-              <span class="p-cta">Смотреть проект →</span>
-            </div>
+            <p class="p-eyebrow">Product Design · Strategy</p>
+            <h3>Концепт личного пространства участника: основа для продуктовой стратегии retention</h3>
+            <p>Создала прототип персонализированного кабинета участника конференции для проверки 5 гипотез</p>
+            <span class="p-cta">Смотреть проект →</span>
           </div>
           <div class="p-image">
             <img class="img-bg" src="images/account-bg.avif" alt="" />
@@ -938,14 +849,12 @@
           </div>
         </a>
 
-        <!-- 1: текст слева, фото справа -->
         <a class="p-card fade-up" href="navigation.html">
           <div class="p-text">
-            <div class="p-text-inner">
-              <h3>Система оценки навигации на конференциях</h3>
-              <p>Разработала систему оценки, превращающую наблюдения в данные для улучшения пользовательского опыта</p>
-              <span class="p-cta">Смотреть проект →</span>
-            </div>
+            <p class="p-eyebrow">UX Research · Metrics</p>
+            <h3>Система оценки навигации: из разовой задачи — в управляемый стандарт</h3>
+            <p>Превратила субъективные ощущения в числовую метрику навигации — теперь команда проводит аудит самостоятельно.</p>
+            <span class="p-cta">Смотреть проект →</span>
           </div>
           <div class="p-image">
             <img class="img-bg" src="images/nav-bg.avif" alt="" />
@@ -958,7 +867,7 @@
     <section class="experience-section fade-up">
       <div class="experience-left">
         <div class="skills-sticky-wrap">
-          <h2 class="section-title">Опыт работы</h2>
+          <h2 class="section-headline fade-up">Опыт работы</h2>
 
           <div class="skills-block">
             <p class="skills-label">Навыки</p>
@@ -996,7 +905,7 @@
         <div class="exp-item">
           <div class="exp-header">
             <div class="exp-company">Finance & Productivity App, pre-seed</div>
-            <div class="exp-date">Январь 2026 — н. вр.</div>
+            <div class="exp-date">Январь 2026 — н. вр.</div>
           </div>
           <div class="exp-role">Product Designer</div>
           <ul class="exp-description">
@@ -1011,7 +920,7 @@
         <div class="exp-item">
           <div class="exp-header">
             <div class="exp-company">JUG Ru Group</div>
-            <div class="exp-date">Февраль 2024 — май 2025</div>
+            <div class="exp-date">Февраль 2024 — май 2025</div>
           </div>
           <div class="exp-role">Product designer</div>
           <ul class="exp-description">
@@ -1034,7 +943,7 @@
         <div class="exp-item">
           <div class="exp-header">
             <div class="exp-company">Pushkeen</div>
-            <div class="exp-date">Апрель 2021 — Январь 2024</div>
+            <div class="exp-date">Апрель 2021 — Январь 2024</div>
           </div>
           <div class="exp-role">UI/UX designer</div>
           <ul class="exp-description">
@@ -1101,11 +1010,12 @@
       </div>
     </section>
 
+    <!-- FOOTER -->
     <footer class="site-footer">
-      <h2>Готова подключиться к сложным задачам и разложить их по полочкам</h2>
+      <h2 class="footer-headline">Готова подключиться к сложным задачам и разложить их по полочкам</h2>
       <div class="footer-links">
         <a href="https://t.me/NadyaMyshk" target="_blank">Telegram <span class="arr">↗</span></a>
-        <a href="https://disk.yandex.ru/i/yGqZMtid8uBw-g" target="_blank">Резюме <span class="arr">↗</span></a>
+        <a href="https://disk.yandex.ru/d/tPOqESseJCzjCw" target="_blank">Резюме <span class="arr">↗</span></a>
         <a href="mailto:myshkovetsn&#64;yandex.ru">myshkovetsn&#64;yandex.ru <span class="arr">↗</span></a>
       </div>
     </footer>
@@ -1140,10 +1050,9 @@
         fadeEls.forEach((el) => el.classList.add("in"));
       }
       setTimeout(() => fadeEls.forEach((el) => el.classList.add("in")), 1500);
-
-      <!-- Скрипт для перетаскивания -->
       const stack = document.getElementById("stack");
       const cards = document.querySelectorAll(".stack-card");
+      <!-- Скрипт для перетаскивания -->
 
       cards.forEach((card) => {
         card.addEventListener("dragstart", (e) => e.preventDefault());
@@ -1156,13 +1065,11 @@
         window.addEventListener("mousemove", drag);
         window.addEventListener("mouseup", stopDragging);
 
-        // Для мобилок
         card.addEventListener("touchstart", (e) => startDragging(e.touches[0]));
         window.addEventListener("touchmove", (e) => drag(e.touches[0]));
         window.addEventListener("touchend", stopDragging);
 
         function startDragging(e) {
-          // Сбрасываем z-index у всех и даем текущей 1000
           cards.forEach((c) => (c.style.zIndex = 1));
           card.style.zIndex = 1000;
           isDragging = true;
@@ -1175,7 +1082,6 @@
           if (!isDragging) return;
           currentX = e.clientX - startX;
           currentY = e.clientY - startY;
-          // Оставляем вращение, меняем только координаты
           const angle = getComputedStyle(card).getPropertyValue("--angle");
           card.style.transform = `translate(calc(-50% + ${currentX}px), calc(-50% + ${currentY}px)) rotate(${angle})`;
         }
