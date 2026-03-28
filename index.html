@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="icon" type="image/ico" href="images/favicon.favIcon.ico" />
-    
+
     <style>
       *,
       *::before,
@@ -358,34 +358,33 @@
 
       .p-image {
         position: relative;
-        overflow: hidden;
+        overflow: hidden; /* ключевой момент */
         background: #e8e8ed;
       }
       /* Фон — растягивается на всю область, статичный */
-.img-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* UI — показывается в натуральном размере, не обрезается */
-.img-ui {
+      .img-bg {
         position: absolute;
-        bottom: 0;
+        inset: 0;
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
         display: block;
-        transform-origin: bottom;
-        transform: scale(0.95);
+      }
+
+      /* UI — показывается в натуральном размере, не обрезается */
+      .img-ui {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%) scale(0.95);
+        width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        transform-origin: bottom center;
         transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        will-change: transform; /* подсказка браузеру — плавнее */
       }
       .p-card:hover .img-ui {
-        transform: scale(1.04);
+        transform: translateX(-50%) scale(1.04);
       }
 
       /* ══════════════════════════════
@@ -681,7 +680,7 @@
         }
 
         #projects {
-          padding: 120px 48px;
+          padding: 80px 16px;
         }
         .section-headline {
           font-size: 44px;
@@ -690,19 +689,28 @@
           margin-bottom: 40px;
         }
 
-        .p-card {
-          grid-template-columns: 1fr;
-          min-height: auto;
+        @media (max-width: 800px) {
+          .p-card {
+            grid-template-columns: 1fr;
+            max-height: unset;
+          }
+
+          .p-text {
+            padding: 32px 20px;
+          }
+
+          .p-image {
+            aspect-ratio: 4 / 3;
+          }
+
+          .img-ui {
+            width: 85%;
+          }
         }
         .p-card.img-left .p-image {
           order: 0;
         }
-        .p-image {
-          min-height: 260px;
-        }
-        .p-text {
-          padding: 36px 24px;
-        }
+
         .p-text h3 {
           font-size: 24px;
         }
@@ -710,17 +718,19 @@
           opacity: 1;
           transform: none;
         }
-
-        /* Уменьшаем общие отступы секции */
         #about-me {
           padding: 80px 16px;
         }
 
-        /* Заголовок делаем более читабельным для мобилки */
         .about-title {
           font-size: 28px;
           margin-bottom: 40px;
           max-width: 100%;
+        }
+        .exp-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
         }
 
         /* Ограничиваем высоту зоны, чтобы карточки не разлетались за пределы экрана */
@@ -828,8 +838,11 @@
         <a class="p-card fade-up" href="rating.html">
           <div class="p-text">
             <p class="p-eyebrow">UX Research · Product Design</p>
-            <h3>Просмотренные доклады: рост конверсии в отзывы на 34%</h3>
-            <p>Участники не отвечали на анкеты — не потому что ленились, а потому что искать нужный доклад в списке из 80 позиций было слишком дорого. Я встроила оценку прямо в расписание — конверсия выросла в 3 раза.</p>
+            <h3>Просмотренные доклады: рост конверсии в отзывы на 22%</h3>
+            <p>
+              Участники не отвечали на анкеты — не потому что ленились, а потому что искать нужный доклад в списке из 80 позиций было слишком дорого. Я встроила оценку прямо в расписание — скорость
+              заполнения выросла в 3 раза.
+            </p>
             <span class="p-cta">Смотреть проект →</span>
           </div>
           <div class="p-image">
@@ -842,9 +855,10 @@
           <div class="p-text">
             <p class="p-eyebrow">Product Design · Strategy</p>
             <h3>Концепт личного пространства участника: основа для продуктовой стратегии retention</h3>
-            <p>Создала прототип персонализированного кабинета участника конференции для проверки 5 гипотез</p>
+            <p>Создала прототип персонализированного кабинета участника конференции для проверки 5 гипотез</p>
             <span class="p-cta">Смотреть проект →</span>
           </div>
+
           <div class="p-image">
             <img class="img-bg" src="images/account-bg.avif" alt="" />
             <img class="img-ui" src="images/account-ui.png" alt="Личное пространство" />
